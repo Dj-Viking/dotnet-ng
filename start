@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Starting dotnet SPA application...stand by..."
+
+dotnet run;
