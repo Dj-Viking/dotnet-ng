@@ -1,0 +1,35 @@
+<form class="add-form">
+  <div class="form-control">
+    <label for="text">Todo</label>
+    <input
+      type="text"
+      name="text"
+      id="text"
+      [(ngModel)]="todo_text"
+      placeholder="Add a todo"
+    >
+  </div>
+  <div class="form-control">
+    <label for="text">Date</label>
+    <input
+      type="text"
+      name="date"
+      id="text"
+      [(ngModel)]="day_date"
+    >
+  </div>
+  <div class="form-control form-control-check">
+    <label for="reminder">Set Reminder</label>
+    <input
+      type="checkbox"
+      name="reminder"
+      id="reminder"
+      [(ngModel)]="reminder"
+    >
+  </div>
+  <input
+    type="submit"
+    value="Save Task"
+    class="btn btn-primary"
+  >
+</form>

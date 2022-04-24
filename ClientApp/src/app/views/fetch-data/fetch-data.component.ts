@@ -1,19 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-@Component({
-  selector: 'app-fetch-data',
-  templateUrl: './fetch-data.component.html'
-})
-export class FetchDataComponent {
-  public forecasts: WeatherForecast[] = [];
-
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<WeatherForecast[]>(baseUrl + 'weatherforecast').subscribe(result => {
-      this.forecasts = result;
-    }, error => console.error(error));
-  }
-}
+import { Component, OnInit } from '@angular/core';
+import { WeatherService } from 'src/app/services/weather.service';
 
 interface WeatherForecast {
   date: string;
@@ -21,3 +7,20 @@ interface WeatherForecast {
   temperatureF: number;
   summary: string;
 }
+
+@Component({
+  selector: 'app-fetch-data',
+  templateUrl: './fetch-data.component.html'
+})
+export class FetchDataComponent implements OnInit {
+  public forecasts: WeatherForecast[] = [];
+
+  constructor(private weatherService: WeatherService) { }
+
+  ngOnInit(): void {
+    this.weatherService.getWeather().subscribe((forecasts) => {
+      this.forecasts = forecasts;
+    })
+  }
+}
+

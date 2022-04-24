@@ -12,6 +12,8 @@ import { FetchDataComponent } from './views/fetch-data/fetch-data.component';
 import { TodosComponent } from './views/todos/todos.component';
 import { TodosHeaderComponent } from './components/todos-header/todos-header.component';
 import { TodosFormToggleButtonComponent } from './components/todos-form-toggle-button/todos-form-toggle-button.component';
+import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { TodosFormToggleButtonComponent } from './components/todos-form-toggle-b
     FetchDataComponent,
     TodosComponent,
     TodosHeaderComponent,
-    TodosFormToggleButtonComponent
+    TodosFormToggleButtonComponent,
+    AddTaskFormComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
