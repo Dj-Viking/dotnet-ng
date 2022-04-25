@@ -1,20 +1,32 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Todo } from 'src/Todo';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    "Content-Type": "application/json"
-  })
-};
+interface MyHttpOptions {
+  headers: HttpHeaders;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoServiceService {
+  private baseUrl!: string;
+  private httpOptions: MyHttpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  };
+  constructor(private http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
-  constructor(private http: HttpClient, @Inject("BASE_URL") baseUrl: string) { }
+  getTodos(): Observable<Todo[]> {
+    return this.http.get<Todo[]>(`${this.baseUrl}todos`);
+  }
 
+  addTodo(todo: Todo): Observable<Todo> {
+    return this.http.post<Todo>(`${this.baseUrl}todos`, todo, this.httpOptions);
+  }
 
 }

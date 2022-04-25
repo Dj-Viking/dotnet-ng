@@ -9,6 +9,9 @@ trim_trailing_whitespace = true
 
 [*.ts]
 quote_type = double
+indent_style = space
+indent_size = 4
+
 
 [*.cs]
 quote_type = double

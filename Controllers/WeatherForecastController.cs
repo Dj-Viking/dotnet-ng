@@ -8,7 +8,7 @@ using dotnet_ng.Connection;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    MySqlConnection connection = new ConnectionClass().connection;
+    private MySqlConnection connection = new ConnectionClass().connection;
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
