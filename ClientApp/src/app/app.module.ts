@@ -9,11 +9,10 @@ import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './views/home/home.component';
 import { CounterComponent } from './views/counter/counter.component';
 import { FetchDataComponent } from './views/fetch-data/fetch-data.component';
-import { TodosComponent } from './views/todos/todos.component';
 import { TodosHeaderComponent } from './components/todos-header/todos-header.component';
 import { TodosFormToggleButtonComponent } from './components/todos-form-toggle-button/todos-form-toggle-button.component';
-import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
-import { TasksComponent } from './components/tasks/tasks.component';
+import { AddTodoFormComponent } from './components/add-todo-form/add-todo-form.component';
+import { TodosComponent } from './components/todos/todos.component';
 
 @NgModule({
   declarations: [
@@ -25,8 +24,8 @@ import { TasksComponent } from './components/tasks/tasks.component';
     TodosComponent,
     TodosHeaderComponent,
     TodosFormToggleButtonComponent,
-    AddTaskFormComponent,
-    TasksComponent
+    AddTodoFormComponent,
+    TodosComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

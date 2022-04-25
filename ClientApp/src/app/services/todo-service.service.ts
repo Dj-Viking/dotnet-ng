@@ -4,29 +4,29 @@ import { Observable } from 'rxjs';
 import { Todo } from 'src/Todo';
 
 interface MyHttpOptions {
-  headers: HttpHeaders;
+    headers: HttpHeaders;
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class TodoServiceService {
-  private baseUrl!: string;
-  private httpOptions: MyHttpOptions = {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json"
-    })
-  };
-  constructor(private http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
-    this.baseUrl = baseUrl;
-  }
+    private baseUrl!: string;
+    private httpOptions: MyHttpOptions = {
+        headers: new HttpHeaders({
+            "Content-Type": "application/json"
+        })
+    };
+    constructor(private http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
+        this.baseUrl = baseUrl;
+    }
 
-  getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(`${this.baseUrl}todos`);
-  }
+    getTodos(): Observable<Todo[]> {
+        return this.http.get<Todo[]>(`${this.baseUrl}todos`);
+    }
 
-  addTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(`${this.baseUrl}todos`, todo, this.httpOptions);
-  }
+    addTodo(todo: Todo): Observable<Todo> {
+        return this.http.post<Todo>(`${this.baseUrl}todos`, todo, this.httpOptions);
+    }
 
 }

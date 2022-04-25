@@ -1,17 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-todos-form-toggle-button',
-  templateUrl: './todos-form-toggle-button.component.html',
-  styleUrls: ['./todos-form-toggle-button.component.css']
+    selector: 'app-todos-form-toggle-button',
+    templateUrl: './todos-form-toggle-button.component.html',
+    styleUrls: ['./todos-form-toggle-button.component.css']
 })
 export class TodosFormToggleButtonComponent implements OnInit {
-  @Input() color!: string;
-  @Input() text!: string;
+    @Input() color!: string;
+    @Input() text!: string;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
 }
