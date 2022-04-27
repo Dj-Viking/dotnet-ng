@@ -1,7 +1,8 @@
 <header>
   <h1>{{title}}</h1>
   <app-todos-form-toggle-button
-    color="green"
-    text="Add Todo"
+    color="{{showAddTask ? 'red': 'green'}}"
+    text="{{showAddTask ? 'Close': 'Add Task'}}"
+    (btnClick)="toggleAddTodo()"
   ></app-todos-form-toggle-button>
 </header>
