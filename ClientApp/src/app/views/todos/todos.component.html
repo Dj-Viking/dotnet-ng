@@ -1,2 +1,8 @@
 <app-todos-header></app-todos-header>
-<app-add-task-form></app-add-task-form>
+<app-add-todo-form (onAddTodo)="addTodo($event)"></app-add-todo-form>
+<app-todo-item
+  *ngFor="let _todo of todos"
+  [todo]="_todo"
+>
+
+</app-todo-item>

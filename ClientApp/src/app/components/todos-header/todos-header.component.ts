@@ -6,8 +6,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./todos-header.component.css']
 })
 export class TodosHeaderComponent implements OnInit {
-    public title: string = "Todos";
-
+    public title: string = "TODOS"
     constructor() { }
 
     ngOnInit(): void {

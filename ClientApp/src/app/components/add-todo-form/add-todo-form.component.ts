@@ -21,6 +21,22 @@ export class AddTodoFormComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    onSubmit(): void {
+        const todo = {
+            todo_text: this.todo_text,
+            day_date: this.day_date,
+            reminder: this.reminder
+        };
+        console.log("todo here", todo);
+
+
+        this.onAddTodo.emit(todo);
+
+        //clear the form
+        this.todo_text = "";
+        this.day_date = "";
+        this.reminder = false;
+    }
 
 
 }

@@ -10,7 +10,7 @@ interface MyHttpOptions {
 @Injectable({
     providedIn: 'root'
 })
-export class TodoServiceService {
+export class TodoService {
     private baseUrl!: string;
     private httpOptions: MyHttpOptions = {
         headers: new HttpHeaders({
@@ -22,11 +22,11 @@ export class TodoServiceService {
     }
 
     getTodos(): Observable<Todo[]> {
-        return this.http.get<Todo[]>(`${this.baseUrl}todos`);
+        return this.http.get<Todo[]>(`${this.baseUrl}todo`);
     }
 
     addTodo(todo: Todo): Observable<Todo> {
-        return this.http.post<Todo>(`${this.baseUrl}todos`, todo, this.httpOptions);
+        return this.http.post<Todo>(`${this.baseUrl}todo`, todo, this.httpOptions);
     }
 
 }
