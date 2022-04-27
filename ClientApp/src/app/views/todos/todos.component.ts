@@ -15,11 +15,13 @@ export class TodosComponent implements OnInit {
     }
 
     addTodo(todo: Todo): void {
-        console.log("kdfjkdjkfjk");
 
         this.todoService
             .addTodo(todo)
-            .subscribe((t) => this.todos.push(t));
+            .subscribe((t) => {
+                console.log("todo", t);
+                this.todos.push(t);
+            });
     }
 
 }

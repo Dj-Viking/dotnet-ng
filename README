@@ -1,1 +1,0 @@
-APPARENTLY this app should be run from the run/build task that launches in the vscode debugger. for some reason I didn't touch this app and ran it from `dotnet run` And modules could not be resolved for whatever reason. 

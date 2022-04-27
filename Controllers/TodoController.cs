@@ -29,21 +29,4 @@ public class TodoController : ControllerBase
             Console.WriteLine("error occured during todo post request {0}", e);
         }
     }
-
-    // [HttpGet]
-    // public IEnumerable<Todo> Get()
-    // {
-    //     // try
-    //     // {
-    //     //     connection.Open();
-    //     //     Console.WriteLine("what is happening now {0}", connection);
-
-
-    //     // }
-    //     // catch (Exception e)
-    //     // {
-    //     //     Console.WriteLine("error occurred during db connection {0}", e);
-    //     // }
-
-    // }
 }

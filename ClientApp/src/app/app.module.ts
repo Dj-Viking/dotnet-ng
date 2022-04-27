@@ -37,7 +37,7 @@ import { TodoItemComponent } from './components/todo-item/todo-item.component';
             { path: '', component: HomeComponent, pathMatch: 'full' },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
-            { path: 'todos', component: TodosComponent },
+            { path: 'todo-list', component: TodosComponent },
         ])
     ],
     providers: [],
