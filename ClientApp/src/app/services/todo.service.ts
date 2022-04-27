@@ -22,11 +22,11 @@ export class TodoService {
     }
 
     getTodos(): Observable<Todo[]> {
-        return this.http.get<Todo[]>(`${this.baseUrl}todo`);
+        return this.http.get<Todo[]>(`${this.baseUrl}todos`);
     }
 
     addTodo(todo: Todo): Observable<Todo> {
-        return this.http.post<Todo>(`${this.baseUrl}todo`, todo, this.httpOptions);
+        return this.http.post<Todo>(`${this.baseUrl}todos`, todo, this.httpOptions);
     }
 
 }

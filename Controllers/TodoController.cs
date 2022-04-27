@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 using dotnet_ng.Connection;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/todos")]
 public class TodoController : ControllerBase
 {
     private MySqlConnection connection = new ConnectionClass().connection;
@@ -22,7 +22,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            Console.WriteLine("heres the todo from the body", todo);
+            Console.WriteLine("heres the todo from the body {0}", todo);
         }
         catch (Exception e)
         {

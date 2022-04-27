@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 using dotnet_ng.Connection;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/weatherforecast")]
 public class WeatherForecastController : ControllerBase
 {
     private MySqlConnection connection = new ConnectionClass().connection;

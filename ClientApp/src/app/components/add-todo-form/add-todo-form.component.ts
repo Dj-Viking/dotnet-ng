@@ -13,7 +13,7 @@ export class AddTodoFormComponent implements OnInit {
     // TODO: convert into a calendar
     // and post the new TODO in a format that works with
     // saving dates to the MYSQL database
-    day_date: string = "";
+    due_date: string = "";
     reminder: boolean = false;
 
     constructor() { }
@@ -24,7 +24,7 @@ export class AddTodoFormComponent implements OnInit {
     onSubmit(): void {
         const todo = {
             todo_text: this.todo_text,
-            day_date: this.day_date,
+            due_date: this.due_date,
             reminder: this.reminder
         };
         console.log("todo here", todo);
@@ -34,7 +34,7 @@ export class AddTodoFormComponent implements OnInit {
 
         //clear the form
         this.todo_text = "";
-        this.day_date = "";
+        this.due_date = "";
         this.reminder = false;
     }
 
