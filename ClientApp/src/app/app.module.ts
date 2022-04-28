@@ -14,6 +14,7 @@ import { AddTodoFormComponent } from './components/add-todo-form/add-todo-form.c
 import { TodosComponent } from './views/todos/todos.component';
 import { TodosHeaderComponent } from './components/todos-header/todos-header.component';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { TodoItemComponent } from './components/todo-item/todo-item.component';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'todo-list', component: TodosComponent },
-        ])
+        ]),
+        FontAwesomeModule
     ],
     providers: [],
     bootstrap: [AppComponent]

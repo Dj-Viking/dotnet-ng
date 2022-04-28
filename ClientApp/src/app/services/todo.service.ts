@@ -21,12 +21,23 @@ export class TodoService {
         this.baseUrl = baseUrl;
     }
 
+    addTodo(todo: Todo): Observable<Todo> {
+        return this.http.post<Todo>(
+            `${this.baseUrl}todos`, todo, this.httpOptions);
+    }
+
     getTodos(): Observable<Todo[]> {
         return this.http.get<Todo[]>(`${this.baseUrl}todos`);
     }
 
-    addTodo(todo: Todo): Observable<Todo> {
-        return this.http.post<Todo>(`${this.baseUrl}todos`, todo, this.httpOptions);
+    updateTodoReminder(todo: Todo): Observable<Todo> {
+        return this.http.put<Todo>(
+            `${this.baseUrl}todos/${todo.id}`, this.httpOptions);
+    }
+
+    deleteTodo(todo: Todo): Observable<Todo> {
+        return this.http.delete<Todo>(
+            `${this.baseUrl}todos/${todo.id}`)
     }
 
 }

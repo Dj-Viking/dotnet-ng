@@ -1,1 +1,25 @@
-<p>todo-item works!</p>
+<div [ngStyle]="{ 'display': 'flex', 'margin': '1em', 'cursor': 'pointer', 'align-items': 'center'}">
+
+  <div
+    class="todo"
+    [ngClass]="{'reminder': todo.reminder}"
+    [ngStyle]="{'flex-grow': '1'}"
+    (click)="onToggle(todo)"
+  >
+    <div [ngStyle]="{'display': 'flex', 'flex-direction': 'column'}">
+      <span>Due Date: {{ todo.due_date }}</span>
+      <span class="todo-text">
+        TODO: {{ todo.todo_text }}
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <fa-icon
+      (click)="onDelete(todo)"
+      [icon]="faTimes"
+      [ngStyle]="{ 'color': 'red', 'cursor': 'pointer', 'margin-left': '0.5em'}"
+    ></fa-icon>
+  </div>
+
+</div>

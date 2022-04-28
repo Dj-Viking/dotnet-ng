@@ -6,7 +6,7 @@ use test_cs;
 
 CREATE TABLE todos (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  day_date datetime,
+  due_date VARCHAR(255),
   todo_text VARCHAR(255),
-  reminder BIT,
+  reminder BIT
 );

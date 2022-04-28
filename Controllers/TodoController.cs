@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-
 namespace dotnet_ng.Controllers;
+using System.Data;
 using MySql.Data.MySqlClient;
+using Dapper;
 using dotnet_ng.Connection;
 
 [ApiController]
 [Route("/todos")]
 public class TodoController : ControllerBase
 {
-    private MySqlConnection connection = new ConnectionClass().connection;
 
     private readonly ILogger<TodoController> _logger;
 
@@ -18,15 +18,29 @@ public class TodoController : ControllerBase
     }
 
     [HttpPost]
-    public void Post([FromBody] Todo todo)
+    public dynamic Post([FromBody] Todo todo)
     {
         try
         {
-            Console.WriteLine("heres the todo from the body {0}", todo);
+            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            {
+                Todo newTodo = new Todo()
+                {
+                    todo_text = todo.todo_text,
+                    due_date = todo.due_date,
+                    reminder = todo.reminder
+                };
+
+                string sqlQuery = "INSERT INTO todos (todo_text, due_date, reminder) VALUES(@todo_text, @due_date, @reminder)";
+
+                int rowsAffected = db.Execute(sqlQuery, newTodo);
+            }
+            return Ok(new JsonResult(new { Status = 200 }));
         }
         catch (Exception e)
         {
             Console.WriteLine("error occured during todo post request {0}", e);
+            return BadRequest(new JsonResult(new { Message = "OH NO", Status = 500 }));
         }
     }
 }

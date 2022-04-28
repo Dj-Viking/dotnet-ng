@@ -15,13 +15,29 @@ export class TodosComponent implements OnInit {
     }
 
     addTodo(todo: Todo): void {
-
         this.todoService
             .addTodo(todo)
             .subscribe((t) => {
                 console.log("todo", t);
-                this.todos.push(t);
+                this.todos.push(todo);
             });
+    }
+
+    deleteTodo(todo: Todo): void {
+        this.todoService
+            .deleteTodo(todo)
+            .subscribe(() => {
+                this.todos = this.todos.filter(t => {
+                    return t.id !== todo.id
+                });
+            });
+    }
+
+    toggleReminder(todo: Todo): void {
+        todo.reminder = !todo.reminder;
+        this.todoService
+            .updateTodoReminder(todo)
+            .subscribe();
     }
 
 }

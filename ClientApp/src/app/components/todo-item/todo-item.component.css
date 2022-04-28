@@ -1,0 +1,16 @@
+.todo {
+  background: #f4f4f4;
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.todo.reminder {
+  background-color: rgb(136, 200, 255);
+}
+
+.todo h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

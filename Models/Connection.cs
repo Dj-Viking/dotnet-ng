@@ -8,16 +8,20 @@ namespace dotnet_ng.Connection;
 
 public class ConnectionClass
 {
+    private string host;
+    private string database;
+    private string username;
+    private string password;
     public MySqlConnection connection;
+    public string connection_string;
 
     public ConnectionClass()
     {
-        string host = "localhost";
-        string database = "test_cs";
-        string username = "root";
-        string password = "root123@";
-        string port = "3306";
-        string connection_string = $"Server={host};database={database};port={port};username={username};Pwd={password};SslMode=none;";
+        host = "localhost";
+        database = "test_cs";
+        username = "root";
+        password = "root123@";
+        connection_string = $"Server={host};Database={database};User={username};Password={password};";
 
         connection = new MySqlConnection(connection_string);
     }
