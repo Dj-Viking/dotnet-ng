@@ -8,7 +8,6 @@ using dotnet_ng.Connection;
 [Route("/weatherforecast")]
 public class WeatherForecastController : ControllerBase
 {
-    private MySqlConnection connection = new ConnectionClass().connection;
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -21,29 +20,24 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-
-
     [HttpGet]
-    public IEnumerable<WeatherForecast> Get()
+    public dynamic Get()
     {
-        // try
-        // {
-        //     connection.Open();
-        //     Console.WriteLine("what is happening now {0}", connection);
-
-
-        // }
-        // catch (Exception e)
-        // {
-        //     Console.WriteLine("error occurred during db connection {0}", e);
-        // }
-
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        try
         {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("there was an error during getting the weather forecast {0}", e);
+            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+        }
+
     }
 }

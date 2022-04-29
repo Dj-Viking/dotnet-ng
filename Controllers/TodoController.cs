@@ -43,4 +43,26 @@ public class TodoController : ControllerBase
             return BadRequest(new JsonResult(new { Message = "OH NO", Status = 500 }));
         }
     }
+
+    [HttpGet]
+    public dynamic Get()
+    {
+        try
+        {
+            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            {
+                string query = "SELECT * FROM todos";
+
+                IEnumerable<Todo> todos = db.Query<Todo>(query);
+
+                return Ok(todos.ToArray());
+            }
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine("error occured during todo post request {0}", e);
+            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+        }
+    }
 }
