@@ -14,11 +14,16 @@
     </div>
   </div>
 
-  <div>
+  <div [ngStyle]="{'display': 'flex', 'flex-direction': 'column'}">
     <fa-icon
       (click)="onDelete(todo)"
       [icon]="faTimes"
       [ngStyle]="{ 'color': 'red', 'cursor': 'pointer', 'margin-left': '0.5em'}"
+    ></fa-icon>
+    <fa-icon
+      (click)="onOpenEdit(todo)"
+      [icon]="faPencil"
+      [ngStyle]="{ 'color': 'blue', 'cursor': 'pointer', 'margin-left': '0.5em'}"
     ></fa-icon>
   </div>
 

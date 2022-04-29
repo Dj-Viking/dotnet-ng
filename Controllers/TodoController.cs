@@ -17,6 +17,7 @@ public class TodoController : ControllerBase
         _logger = logger;
     }
 
+    // todos
     [HttpPost]
     public dynamic Post([FromBody] Todo todo)
     {
@@ -44,6 +45,7 @@ public class TodoController : ControllerBase
         }
     }
 
+    // todos
     [HttpGet]
     public dynamic Get()
     {
@@ -56,6 +58,29 @@ public class TodoController : ControllerBase
                 IEnumerable<Todo> todos = db.Query<Todo>(query);
 
                 return Ok(todos.ToArray());
+            }
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine("error occured during todo post request {0}", e);
+            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+        }
+    }
+
+    // todos/:id
+    [HttpDelete("{id}")]
+    public dynamic Delete([FromRoute] int id)
+    {
+        try
+        {
+            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            {
+                string query = $"DELETE FROM todos WHERE id = {id}";
+
+                db.Execute(query, null);
+
+                return Ok();
             }
         }
         catch (Exception e)

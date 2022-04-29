@@ -28,6 +28,15 @@ export class TodosComponent implements OnInit {
             });
     }
 
+    editTodo(todo: Todo): void {
+        this.todoService
+            .editTodo(todo)
+            .subscribe(todo => {
+                console.log("edited todo", todo);
+                //TODO: replace the todo at the index of the original todo in the todos array
+            });
+    }
+
     deleteTodo(todo: Todo): void {
         this.todoService
             .deleteTodo(todo)

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Todo } from 'src/Todo';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-todo-item',
@@ -10,8 +11,10 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 export class TodoItemComponent implements OnInit {
     @Input() todo!: Todo
     @Output() onDeleteTodo: EventEmitter<Todo> = new EventEmitter();
+    @Output() onEditTodo: EventEmitter<Todo> = new EventEmitter();
     @Output() onToggleReminder: EventEmitter<Todo> = new EventEmitter();
     public faTimes = faTimes;
+    public faPencil = faPencil;
     constructor() { }
 
     ngOnInit(): void {
@@ -23,6 +26,10 @@ export class TodoItemComponent implements OnInit {
 
     onDelete(todo: Todo): void {
         this.onDeleteTodo.emit(todo);
+    }
+
+    onOpenEdit(todo: Todo): void {
+        this.onEditTodo.emit(todo);
     }
 
 }
