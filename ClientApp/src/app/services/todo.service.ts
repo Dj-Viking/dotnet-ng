@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Todo } from 'src/Todo';
+import { AddTodoResponse, Todo } from 'src/interfaces';
 
 interface MyHttpOptions {
     headers: HttpHeaders;
@@ -21,8 +21,8 @@ export class TodoService {
         this.baseUrl = baseUrl;
     }
 
-    addTodo(todo: Todo): Observable<Todo> {
-        return this.http.post<Todo>(
+    addTodo(todo: Todo): Observable<AddTodoResponse> {
+        return this.http.post<AddTodoResponse>(
             `${this.baseUrl}todos`,
             todo,
             this.httpOptions);

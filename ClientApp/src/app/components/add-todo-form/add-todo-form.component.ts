@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Todo } from 'src/Todo';
+import { Todo } from 'src/interfaces';
 import { UiService } from 'src/app/services/ui.service';
 
 @Component({

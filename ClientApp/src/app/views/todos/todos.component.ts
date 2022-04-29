@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Todo } from "src/Todo";
+import { Todo, AddTodoResponse } from "src/interfaces";
 import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
@@ -19,11 +19,14 @@ export class TodosComponent implements OnInit {
             });
     }
 
+    // SQL insert statement executions only output a number of rows affected and not an entire object
+    // have to perform a separate query to get the last inserted ID and set it to the object here
+    // before pushing into the todo array.
     addTodo(todo: Todo): void {
         this.todoService
             .addTodo(todo)
-            .subscribe((t) => {
-                console.log("todo", t);
+            .subscribe((res: AddTodoResponse) => {
+                todo.id = res.id;
                 this.todos.push(todo);
             });
     }

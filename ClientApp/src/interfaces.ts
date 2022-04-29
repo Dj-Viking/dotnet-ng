@@ -4,3 +4,8 @@ export interface Todo {
     todo_text: string | null;
     reminder: boolean | null;
 }
+
+export interface AddTodoResponse {
+    status: number;
+    id: number;
+}

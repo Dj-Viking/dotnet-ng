@@ -32,11 +32,15 @@ public class TodoController : ControllerBase
                     reminder = todo.reminder
                 };
 
-                string sqlQuery = "INSERT INTO todos (todo_text, due_date, reminder) VALUES(@todo_text, @due_date, @reminder)";
+                string insert = @"
+                    INSERT INTO todos (todo_text, due_date, reminder) 
+                    VALUES(@todo_text, @due_date, @reminder);";
+                string select = @"SELECT LAST_INSERT_ID();";
 
-                int rowsAffected = db.Execute(sqlQuery, newTodo);
+                db.Execute(insert, newTodo);
+                int inserted = db.QuerySingle<int>(select, null);
+                return Ok(new { status = 200, id = inserted });
             }
-            return Ok(new JsonResult(new { Status = 200 }));
         }
         catch (Exception e)
         {
@@ -70,7 +74,7 @@ public class TodoController : ControllerBase
 
     // todos/:id
     [HttpDelete("{id}")]
-    public dynamic Delete([FromRoute] int id)
+    public dynamic asdf([FromRoute] int id)
     {
         try
         {
