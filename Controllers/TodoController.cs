@@ -96,12 +96,12 @@ public class TodoController : ControllerBase
     }
 
     [HttpPut]
-    [Route("todos/edit/{id}")]
+    [Route("/todos/edit/{id}")]
     public dynamic Edit([FromBody] Todo todo, [FromRoute] int id)
     {
         try
         {
-            return Ok();
+            return Ok(new { status = 200 });
         }
         catch (Exception e)
         {
