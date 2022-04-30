@@ -95,7 +95,8 @@ public class TodoController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
+    [Route("todos/edit/{id}")]
     public dynamic Edit([FromBody] Todo todo, [FromRoute] int id)
     {
         try
