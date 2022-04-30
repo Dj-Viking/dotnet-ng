@@ -19,7 +19,7 @@ public class TodoController : ControllerBase
 
     // todos
     [HttpPost]
-    public dynamic Post([FromBody] Todo todo)
+    public dynamic AddTodo([FromBody] Todo todo)
     {
         try
         {
@@ -51,7 +51,7 @@ public class TodoController : ControllerBase
 
     // todos
     [HttpGet]
-    public dynamic Get()
+    public dynamic GetTodos()
     {
         try
         {
@@ -74,7 +74,7 @@ public class TodoController : ControllerBase
 
     // todos/:id
     [HttpDelete("{id}")]
-    public dynamic asdf([FromRoute] int id)
+    public dynamic DeleteTodo([FromRoute] int id)
     {
         try
         {
@@ -90,6 +90,20 @@ public class TodoController : ControllerBase
         catch (Exception e)
         {
 
+            Console.WriteLine("error occured during todo post request {0}", e);
+            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+        }
+    }
+
+    [HttpPut("{id}")]
+    public dynamic Edit([FromBody] Todo todo, [FromRoute] int id)
+    {
+        try
+        {
+            return Ok();
+        }
+        catch (Exception e)
+        {
             Console.WriteLine("error occured during todo post request {0}", e);
             return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
         }
