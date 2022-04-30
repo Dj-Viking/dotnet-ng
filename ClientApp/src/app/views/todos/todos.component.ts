@@ -36,16 +36,17 @@ export class TodosComponent implements OnInit {
     }
 
     editTodo(todo: Todo): void {
-        this.todoService
-            .editTodo(todo)
-            .subscribe((res: EditTodoResponse) => {
-                //NOT IMPLEMENTED
-            });
+
+        //only getting a todo if the child element was successful
+        // with the PUT request to the API and did not error
+
+        // handle splicing the old todo out and replacing it
+        // with the new todo
     }
 
     openEditTodo(todo: Todo): void {
         console.log("open edit todo", todo);
-        this.uiService.toggleEditTodo();
+        this.uiService.toggleEditTodo(todo);
     }
 
     deleteTodo(todo: Todo): void {

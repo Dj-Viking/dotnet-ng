@@ -1,1 +1,42 @@
-<p *ngIf="showEditTodo">edit-todo-form works!</p>
+<form
+  *ngIf="showEditTodo"
+  class="add-form"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="form-control">
+    <label for="text">Edit Todo</label>
+    <input
+      autocomplete="off"
+      type="text"
+      name="text"
+      id="text"
+      [(ngModel)]="todo_text"
+      placeholder="Code a lot of stuff"
+    >
+  </div>
+  <div class="form-control">
+    <label for="text">Edit Due Date</label>
+    <input
+      autocomplete="off"
+      type="text"
+      name="date"
+      id="text"
+      [(ngModel)]="due_date"
+      placeholder="Due Date"
+    >
+  </div>
+  <div class="form-control form-control-check">
+    <label for="reminder">Set Reminder</label>
+    <input
+      type="checkbox"
+      name="reminder"
+      id="reminder"
+      [(ngModel)]="reminder"
+    >
+  </div>
+  <input
+    type="submit"
+    value="Save Edit"
+    class="btn btn-primary"
+  >
+</form>
