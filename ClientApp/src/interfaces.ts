@@ -9,3 +9,6 @@ export interface AddTodoResponse {
     status: number;
     id: number;
 }
+export interface EditTodoResponse {
+    status: number;
+}

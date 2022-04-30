@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AddTodoResponse, Todo } from 'src/interfaces';
+import { AddTodoResponse, EditTodoResponse, Todo } from 'src/interfaces';
 
 interface MyHttpOptions {
     headers: HttpHeaders;
@@ -39,8 +39,8 @@ export class TodoService {
             this.httpOptions);
     }
 
-    editTodo(todo: Todo): Observable<Todo> {
-        return this.http.put<Todo>(
+    editTodo(todo: Todo): Observable<EditTodoResponse> {
+        return this.http.put<EditTodoResponse>(
             `${this.baseUrl}todos-edit/${todo.id}`,
             todo,
             this.httpOptions);

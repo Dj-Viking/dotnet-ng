@@ -11,7 +11,7 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons';
 export class TodoItemComponent implements OnInit {
     @Input() todo!: Todo
     @Output() onDeleteTodo: EventEmitter<Todo> = new EventEmitter();
-    @Output() onEditTodo: EventEmitter<Todo> = new EventEmitter();
+    @Output() onOpenEditTodo: EventEmitter<Todo> = new EventEmitter();
     @Output() onToggleReminder: EventEmitter<Todo> = new EventEmitter();
     public faTimes = faTimes;
     public faPencil = faPencil;
@@ -29,7 +29,7 @@ export class TodoItemComponent implements OnInit {
     }
 
     onOpenEdit(todo: Todo): void {
-        this.onEditTodo.emit(todo);
+        this.onOpenEditTodo.emit(todo);
     }
 
 }

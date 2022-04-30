@@ -15,6 +15,7 @@ import { TodosComponent } from './views/todos/todos.component';
 import { TodosHeaderComponent } from './components/todos-header/todos-header.component';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EditTodoFormComponent } from './components/edit-todo-form/edit-todo-form.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         TodosComponent,
         TodosHeaderComponent,
         TodoItemComponent,
+        EditTodoFormComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

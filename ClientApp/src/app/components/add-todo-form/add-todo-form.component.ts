@@ -18,10 +18,10 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
     public due_date: string = "";
     public reminder: boolean = false;
     public showAddTodo!: boolean;
-    public subscription!: Subscription;
+    public addTodoSub!: Subscription;
 
     constructor(private uiService: UiService) {
-        this.subscription = this.uiService
+        this.addTodoSub = this.uiService
             .onToggle()
             .subscribe(value => {
                 this.showAddTodo = value;
@@ -32,7 +32,7 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.addTodoSub.unsubscribe();
     }
 
     onSubmit(): void {

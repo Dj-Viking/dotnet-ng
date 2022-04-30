@@ -16,7 +16,6 @@ export class TodosFormToggleButtonComponent implements OnInit {
     }
 
     onClick(): void {
-        console.log('dkfjkdjfdj');
         this.btnClick.emit();
     }
 }

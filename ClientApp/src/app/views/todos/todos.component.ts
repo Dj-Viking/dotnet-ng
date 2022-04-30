@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Todo, AddTodoResponse } from "src/interfaces";
+import { Todo, AddTodoResponse, EditTodoResponse } from "src/interfaces";
 import { TodoService } from 'src/app/services/todo.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
     selector: 'app-todos',
@@ -9,7 +10,10 @@ import { TodoService } from 'src/app/services/todo.service';
 })
 export class TodosComponent implements OnInit {
     public todos: Todo[] = [];
-    constructor(private todoService: TodoService) { }
+    constructor(
+        private todoService: TodoService,
+        private uiService: UiService
+    ) { }
 
     ngOnInit(): void {
         this.todoService
@@ -34,10 +38,14 @@ export class TodosComponent implements OnInit {
     editTodo(todo: Todo): void {
         this.todoService
             .editTodo(todo)
-            .subscribe(todo => {
-                console.log("edited todo", todo);
-                //TODO: replace the todo at the index of the original todo in the todos array
+            .subscribe((res: EditTodoResponse) => {
+                //NOT IMPLEMENTED
             });
+    }
+
+    openEditTodo(todo: Todo): void {
+        console.log("open edit todo", todo);
+        this.uiService.toggleEditTodo();
     }
 
     deleteTodo(todo: Todo): void {
