@@ -44,6 +44,8 @@ export class UiService {
             reminder: false,
         };
         this.todoContextSubject.next(this.todoContext);
+        this.showEditTodo = !this.showEditTodo;
+        this.editTodoSubject.next(this.showEditTodo);
         return this.todoContextSubject.asObservable();
     }
 

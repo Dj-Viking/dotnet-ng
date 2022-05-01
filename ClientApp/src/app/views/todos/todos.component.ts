@@ -42,6 +42,13 @@ export class TodosComponent implements OnInit {
 
         // handle splicing the old todo out and replacing it
         // with the new todo
+        this.todos = this.todos.map(t => {
+            if (t.id === todo.id) {
+                return todo;
+            } else {
+                return t;
+            }
+        });
     }
 
     openEditTodo(todo: Todo): void {

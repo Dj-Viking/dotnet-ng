@@ -45,7 +45,7 @@ public class TodoController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine("error occured during todo post request {0}", e);
-            return BadRequest(new JsonResult(new { Message = "OH NO", Status = 500 }));
+            return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
 
@@ -68,7 +68,7 @@ public class TodoController : ControllerBase
         {
 
             Console.WriteLine("error occured during todo post request {0}", e);
-            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+            return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
 
@@ -91,22 +91,37 @@ public class TodoController : ControllerBase
         {
 
             Console.WriteLine("error occured during todo post request {0}", e);
-            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+            return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
 
     [HttpPut]
-    [Route("/todos/edit/{id}")]
+    [Route("/todos-edit/{id}")]
     public dynamic Edit([FromBody] Todo todo, [FromRoute] int id)
     {
         try
         {
-            return Ok(new { status = 200 });
+            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            {
+
+                string update = $@"
+                    UPDATE 
+                        todos
+                    SET 
+                        todo_text = '{todo.todo_text}', 
+                        due_date = '{todo.due_date}', 
+                        reminder = {todo.reminder}
+                    WHERE 
+                        id = {id};";
+
+                int rowsAffected = db.Execute(update, null);
+                return Ok(new { status = 200 });
+            }
         }
         catch (Exception e)
         {
             Console.WriteLine("error occured during todo post request {0}", e);
-            return BadRequest(new JsonResult(new { message = "OH NO", status = 500 }));
+            return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
 }

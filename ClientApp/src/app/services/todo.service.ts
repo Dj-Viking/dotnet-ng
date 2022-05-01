@@ -41,7 +41,7 @@ export class TodoService {
 
     editTodo(todo: Todo): Observable<EditTodoResponse> {
         return this.http.put<EditTodoResponse>(
-            `${this.baseUrl}todos/edit/${todo.id}`,
+            `${this.baseUrl}todos-edit/${todo.id}`,
             todo,
             this.httpOptions);
     }
