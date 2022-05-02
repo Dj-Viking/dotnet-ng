@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Todo } from 'src/interfaces';
+import { AddTodoResponse, Todo } from 'src/interfaces';
 import { UiService } from 'src/app/services/ui.service';
+import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
     selector: 'app-add-todo-form',
@@ -17,14 +18,26 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
     public todo_text: string = "";
     public due_date: string = "";
     public reminder: boolean = false;
+    public errorMsg: string = "";
     public showAddTodo!: boolean;
+    public showAddError: boolean = false;
+    public showAddErrorSub!: Subscription;
     public addTodoSub!: Subscription;
 
-    constructor(private uiService: UiService) {
-        this.addTodoSub = this.uiService
+    constructor(
+        private _uiService: UiService,
+        private _todoService: TodoService
+    ) {
+        this.addTodoSub = this._uiService
             .onToggle()
             .subscribe(value => {
                 this.showAddTodo = value;
+            });
+
+        this.showAddErrorSub = this._uiService
+            .onToggleShowAddError()
+            .subscribe(value => {
+                this.showAddError = value;
             });
     }
 
@@ -33,10 +46,12 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.addTodoSub.unsubscribe();
+        this.showAddErrorSub.unsubscribe();
     }
 
     onSubmit(): void {
         const todo = {
+            id: 0,
             todo_text: this.todo_text,
             due_date: this.due_date,
             reminder: this.reminder
@@ -45,12 +60,31 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
 
         //emit the todo object to the parent element which handles
         // rendering new todo elements 
-        this.onAddTodo.emit(todo);
 
-        //clear the form
-        this.todo_text = "";
-        this.due_date = "";
-        this.reminder = false;
+        //API CALL HERE
+        this._todoService
+            .addTodo(todo)
+            .subscribe(
+                (success: AddTodoResponse) => {
+                    if (success.status === 200) {
+                        todo.id = success.id;
+                        this.onAddTodo.emit(todo);
+                        //clear the form
+                        this.todo_text = "";
+                        this.due_date = "";
+                        this.reminder = false;
+                    }
+                },
+                (error: AddTodoResponse) => {
+                    this.errorMsg = "We're sorry there was a problem with this request.";
+                    this._uiService.toggleShowAddError();
+                    setTimeout(() => {
+                        this._uiService.toggleShowAddError();
+                    }, 3000);
+                }
+            );
+
+
     }
 
 

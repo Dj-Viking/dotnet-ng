@@ -6,54 +6,78 @@ import { Todo } from 'src/interfaces';
     providedIn: 'root'
 })
 export class UiService {
-    private showAddTodo: boolean = false;
-    private showEditTodo: boolean = false;
-    private todoContext!: Todo;
-    private addTodoSubject = new Subject<boolean>();
-    private editTodoSubject = new Subject<boolean>();
-    private todoContextSubject = new Subject<Todo>();
+    private _showAddTodo: boolean = false;
+    private _showEditTodo: boolean = false;
+    private _todoContext!: Todo;
+    private _showEditError: boolean = false;
+    private _showEditErrorSubject = new Subject<boolean>();
+    private _showAddError: boolean = false;
+    private _showAddErrorSubject = new Subject<boolean>();
+    private _addTodoSubject = new Subject<boolean>();
+    private _editTodoSubject = new Subject<boolean>();
+    private _todoContextSubject = new Subject<Todo>();
 
     constructor() { }
 
-    toggleAddTodo(): void {
-        this.showAddTodo = !this.showAddTodo;
-        this.showEditTodo = this.showAddTodo && !this.showEditTodo ? false : false;
-        this.addTodoSubject.next(this.showAddTodo);
-        this.editTodoSubject.next(this.showEditTodo);
+
+
+    public toggleShowAddError(): void {
+        this._showAddError = !this._showAddError;
+        this._showAddErrorSubject.next(this._showAddError);
     }
 
-    onToggle(): Observable<boolean> {
-        return this.addTodoSubject.asObservable();
+    public onToggleShowAddError(): Observable<boolean> {
+        return this._showAddErrorSubject.asObservable();
     }
 
-    toggleEditTodo(todo: Todo): void {
+    public toggleShowEditError(): void {
+        this._showEditError = !this._showEditError;
+        this._showEditErrorSubject.next(this._showEditError);
+    }
+
+    public onToggleShowEditError(): Observable<boolean> {
+        return this._showEditErrorSubject.asObservable();
+    }
+
+    public toggleAddTodo(): void {
+        this._showAddTodo = !this._showAddTodo;
+        this._showEditTodo = this._showAddTodo && !this._showEditTodo ? false : false;
+        this._addTodoSubject.next(this._showAddTodo);
+        this._editTodoSubject.next(this._showEditTodo);
+    }
+
+    public onToggle(): Observable<boolean> {
+        return this._addTodoSubject.asObservable();
+    }
+
+    public toggleEditTodo(todo: Todo): void {
         console.log("toggle edit form");
-        this.showEditTodo = !this.showEditTodo
-        this.showAddTodo = false;
-        this.todoContext = todo;
-        this.todoContextSubject.next(this.todoContext);
-        this.addTodoSubject.next(this.showAddTodo);
-        this.editTodoSubject.next(this.showEditTodo);
+        this._showEditTodo = !this._showEditTodo
+        this._showAddTodo = false;
+        this._todoContext = todo;
+        this._todoContextSubject.next(this._todoContext);
+        this._addTodoSubject.next(this._showAddTodo);
+        this._editTodoSubject.next(this._showEditTodo);
     }
 
-    closeEditTodo(): Observable<Todo> {
-        this.todoContext = {
+    public closeEditTodo(): Observable<Todo> {
+        this._todoContext = {
             id: 0,
             todo_text: "",
             due_date: "",
             reminder: false,
         };
-        this.todoContextSubject.next(this.todoContext);
-        this.showEditTodo = !this.showEditTodo;
-        this.editTodoSubject.next(this.showEditTodo);
-        return this.todoContextSubject.asObservable();
+        this._todoContextSubject.next(this._todoContext);
+        this._showEditTodo = !this._showEditTodo;
+        this._editTodoSubject.next(this._showEditTodo);
+        return this._todoContextSubject.asObservable();
     }
 
-    onToggleEdit(): Observable<boolean> {
-        return this.editTodoSubject.asObservable();
+    public onToggleEdit(): Observable<boolean> {
+        return this._editTodoSubject.asObservable();
     }
 
-    onEditContext(): Observable<Todo> {
-        return this.todoContextSubject.asObservable();
+    public onEditContext(): Observable<Todo> {
+        return this._todoContextSubject.asObservable();
     }
 }

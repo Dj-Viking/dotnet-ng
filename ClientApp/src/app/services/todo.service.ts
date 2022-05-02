@@ -11,44 +11,44 @@ interface MyHttpOptions {
     providedIn: 'root'
 })
 export class TodoService {
-    private baseUrl!: string;
-    private httpOptions: MyHttpOptions = {
+    private _baseUrl!: string;
+    private _httpOptions: MyHttpOptions = {
         headers: new HttpHeaders({
             "Content-Type": "application/json"
         })
     };
-    constructor(private http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
-        this.baseUrl = baseUrl;
+    constructor(private _http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
+        this._baseUrl = baseUrl;
     }
 
-    addTodo(todo: Todo): Observable<AddTodoResponse> {
-        return this.http.post<AddTodoResponse>(
-            `${this.baseUrl}todos`,
+    public addTodo(todo: Todo): Observable<AddTodoResponse> {
+        return this._http.post<AddTodoResponse>(
+            `${this._baseUrl}todos`,
             todo,
-            this.httpOptions);
+            this._httpOptions);
     }
 
-    getTodos(): Observable<Todo[]> {
-        return this.http.get<Todo[]>(`${this.baseUrl}todos`);
+    public getTodos(): Observable<Todo[]> {
+        return this._http.get<Todo[]>(`${this._baseUrl}todos`);
     }
 
-    updateTodoReminder(todo: Todo): Observable<Todo> {
-        return this.http.put<Todo>(
-            `${this.baseUrl}todos-reminder/${todo.id}`,
+    public updateTodoReminder(todo: Todo): Observable<Todo> {
+        return this._http.put<Todo>(
+            `${this._baseUrl}todos-reminder/${todo.id}`,
             todo,
-            this.httpOptions);
+            this._httpOptions);
     }
 
-    editTodo(todo: Todo): Observable<EditTodoResponse> {
-        return this.http.put<EditTodoResponse>(
-            `${this.baseUrl}todos-edit/${todo.id}`,
+    public editTodo(todo: Todo): Observable<EditTodoResponse> {
+        return this._http.put<EditTodoResponse>(
+            `${this._baseUrl}todos-edit/${todo.id}`,
             todo,
-            this.httpOptions);
+            this._httpOptions);
     }
 
-    deleteTodo(todo: Todo): Observable<Todo> {
-        return this.http.delete<Todo>(
-            `${this.baseUrl}todos/${todo.id}`)
+    public deleteTodo(todo: Todo): Observable<Todo> {
+        return this._http.delete<Todo>(
+            `${this._baseUrl}todos/${todo.id}`)
     }
 
 }
