@@ -15,20 +15,30 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
     public todo_text: string = "";
     public due_date: string = "";
     public reminder: boolean = false;
+    public errorMsg: string = "";
+    public showError: boolean = false;
     public showEditTodo: boolean = false;
+    public showErrorSub!: Subscription;
     public editTodoSub!: Subscription;
     public editTodoContextSub!: Subscription;
 
     constructor(
-        private uiService: UiService,
-        private todoService: TodoService
+        private _uiService: UiService,
+        private _todoService: TodoService
     ) {
-        this.editTodoSub = this.uiService
+        this.showErrorSub = this._uiService
+            .onToggleShowEditError()
+            .subscribe(value => {
+                this.showError = value;
+            });
+
+        this.editTodoSub = this._uiService
             .onToggleEdit()
             .subscribe(value => {
                 this.showEditTodo = value;
             });
-        this.editTodoContextSub = this.uiService
+
+        this.editTodoContextSub = this._uiService
             .onEditContext()
             .subscribe(todo => {
                 this.id = todo.id as number;
@@ -44,6 +54,7 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.editTodoSub.unsubscribe();
         this.editTodoContextSub.unsubscribe();
+        this.showErrorSub.unsubscribe();
     }
 
     onSubmit(): void {
@@ -58,26 +69,31 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
         //hmm if i want to handle not clearing after submit
         // maybe only emit the event with the newly edited
         // todo so that the parent can then handle the list
-        this.todoService
+        this._todoService
             .editTodo(edited)
             .subscribe(
                 (success: EditTodoResponse) => {
                     if (success.status === 200) {
                         //do this on success
                         this.onEditTodo.emit(edited);
-                        this.editTodoSub = this.uiService
+                        this.editTodoSub = this._uiService
                             .closeEditTodo()
-                            .subscribe((todo) => {
-                                this.id = todo.id as number;
-                                this.todo_text = todo.todo_text as string;
-                                this.due_date = todo.due_date as string;
-                                this.reminder = todo.reminder as boolean;
+                            .subscribe((empty) => {
+                                this.id = empty.id as number;
+                                this.todo_text = empty.todo_text as string;
+                                this.due_date = empty.due_date as string;
+                                this.reminder = empty.reminder as boolean;
                             });
                     }
                 },
                 (error: EditTodoResponse) => {
                     //TODO: if errored don't clear
                     console.log("error during submit edit", error);
+                    this.errorMsg = "We're sorry there was a problem with this request.";
+                    this._uiService.toggleShowEditError();
+                    setTimeout(() => {
+                        this._uiService.toggleShowEditError();
+                    }, 2000);
                 });
 
 

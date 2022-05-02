@@ -32,19 +32,25 @@ public class TodoController : ControllerBase
                     reminder = todo.reminder
                 };
 
-                string insert = @"
-                    INSERT INTO todos (todo_text, due_date, reminder) 
-                    VALUES(@todo_text, @due_date, @reminder);";
+                string insert = $@"
+                    INSERT INTO 
+                        todos (todo_text, due_date, reminder) 
+                    VALUES(
+                        '{todo.todo_text}', '{todo.due_date}', {todo.reminder});";
+
                 string select = @"SELECT LAST_INSERT_ID();";
 
-                db.Execute(insert, newTodo);
+                db.Execute(insert, null);
+
                 int inserted = db.QuerySingle<int>(select, null);
+
                 return Ok(new { status = 200, id = inserted });
             }
         }
         catch (Exception e)
         {
             Console.WriteLine("error occured during todo post request {0}", e);
+
             return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
@@ -68,6 +74,7 @@ public class TodoController : ControllerBase
         {
 
             Console.WriteLine("error occured during todo post request {0}", e);
+
             return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
@@ -91,6 +98,7 @@ public class TodoController : ControllerBase
         {
 
             Console.WriteLine("error occured during todo post request {0}", e);
+
             return BadRequest(new { message = "OH NO", status = 500 });
         }
     }
@@ -115,12 +123,14 @@ public class TodoController : ControllerBase
                         id = {id};";
 
                 int rowsAffected = db.Execute(update, null);
+
                 return Ok(new { status = 200 });
             }
         }
         catch (Exception e)
         {
             Console.WriteLine("error occured during todo post request {0}", e);
+
             return BadRequest(new { message = "OH NO", status = 500 });
         }
     }

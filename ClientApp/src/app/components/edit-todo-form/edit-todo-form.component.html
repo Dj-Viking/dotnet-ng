@@ -39,4 +39,11 @@
     value="Save Edit"
     class="btn btn-primary"
   >
+  <p *ngIf="!showError">
+    &nbsp;
+  </p>
+  <p
+    *ngIf="showError"
+    [ngStyle]="{'color': 'red', 'text-align': 'center'}"
+  >{{errorMsg}}</p>
 </form>

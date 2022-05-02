@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Todo, AddTodoResponse, EditTodoResponse } from "src/interfaces";
+import { Todo } from "src/interfaces";
 import { TodoService } from 'src/app/services/todo.service';
 import { UiService } from 'src/app/services/ui.service';
 
@@ -10,32 +10,25 @@ import { UiService } from 'src/app/services/ui.service';
 })
 export class TodosComponent implements OnInit {
     public todos: Todo[] = [];
+
     constructor(
-        private todoService: TodoService,
-        private uiService: UiService
+        private _todoService: TodoService,
+        private _uiService: UiService
     ) { }
 
-    ngOnInit(): void {
-        this.todoService
+    public ngOnInit(): void {
+        this._todoService
             .getTodos()
             .subscribe(todos => {
                 this.todos = todos;
             });
     }
 
-    // SQL insert statement executions only output a number of rows affected and not an entire object
-    // have to perform a separate query to get the last inserted ID and set it to the object here
-    // before pushing into the todo array.
-    addTodo(todo: Todo): void {
-        this.todoService
-            .addTodo(todo)
-            .subscribe((res: AddTodoResponse) => {
-                todo.id = res.id;
-                this.todos.push(todo);
-            });
+    public addTodo(todo: Todo): void {
+        this.todos.push(todo);
     }
 
-    editTodo(todo: Todo): void {
+    public editTodo(todo: Todo): void {
 
         //only getting a todo if the child element was successful
         // with the PUT request to the API and did not error
@@ -51,13 +44,13 @@ export class TodosComponent implements OnInit {
         });
     }
 
-    openEditTodo(todo: Todo): void {
+    public openEditTodo(todo: Todo): void {
         console.log("open edit todo", todo);
-        this.uiService.toggleEditTodo(todo);
+        this._uiService.toggleEditTodo(todo);
     }
 
-    deleteTodo(todo: Todo): void {
-        this.todoService
+    public deleteTodo(todo: Todo): void {
+        this._todoService
             .deleteTodo(todo)
             .subscribe(() => {
                 this.todos = this.todos.filter(t => {
@@ -66,9 +59,9 @@ export class TodosComponent implements OnInit {
             });
     }
 
-    toggleReminder(todo: Todo): void {
+    public toggleReminder(todo: Todo): void {
         todo.reminder = !todo.reminder;
-        this.todoService
+        this._todoService
             .updateTodoReminder(todo)
             .subscribe();
     }

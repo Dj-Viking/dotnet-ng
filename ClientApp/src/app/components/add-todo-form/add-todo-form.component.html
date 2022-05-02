@@ -39,4 +39,13 @@
     value="Save Task"
     class="btn btn-primary"
   >
+  <p *ngIf="!showAddError">
+    &nbsp;
+  </p>
+  <p
+    [ngStyle]="{'color': 'red', 'text-align': 'center'}"
+    *ngIf="showAddError"
+  >
+    {{ errorMsg }}
+  </p>
 </form>
