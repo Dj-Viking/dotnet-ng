@@ -23,7 +23,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            using (IDbConnection db = new ConnectionClass().connection)
             {
                 Todo newTodo = new Todo()
                 {
@@ -61,7 +61,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            using (IDbConnection db = new ConnectionClass().connection)
             {
                 string query = "SELECT * FROM todos";
 
@@ -85,7 +85,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            using (IDbConnection db = new ConnectionClass().connection)
             {
                 string query = $"DELETE FROM todos WHERE id = {id}";
 
@@ -109,7 +109,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            using (IDbConnection db = new ConnectionClass().connection)
             {
                 string reminderUpdate = $@"
                     UPDATE
@@ -137,7 +137,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            using (IDbConnection db = new ConnectionClass().connection)
             {
 
                 string update = $@"
