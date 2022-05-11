@@ -4,7 +4,7 @@
     class="todo"
     [ngClass]="{'reminder': todo.reminder}"
     [ngStyle]="{'flex-grow': '1'}"
-    (click)="onToggle(todo)"
+    (click)="onReminderToggle(todo)"
   >
     <div [ngStyle]="{'display': 'flex', 'flex-direction': 'column'}">
       <span>Due Date: {{ todo.due_date }}</span>

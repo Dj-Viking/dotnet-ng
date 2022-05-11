@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AddTodoResponse, EditTodoResponse, Todo } from 'src/interfaces';
+import { IAddTodoResponse, IEditTodoResponse, IUpdateTodoReminderResponse, Todo } from 'src/interfaces';
 
 interface MyHttpOptions {
     headers: HttpHeaders;
@@ -21,8 +21,8 @@ export class TodoService {
         this._baseUrl = baseUrl;
     }
 
-    public addTodo(todo: Todo): Observable<AddTodoResponse> {
-        return this._http.post<AddTodoResponse>(
+    public addTodo(todo: Todo): Observable<IAddTodoResponse> {
+        return this._http.post<IAddTodoResponse>(
             `${this._baseUrl}todos`,
             todo,
             this._httpOptions);
@@ -32,15 +32,16 @@ export class TodoService {
         return this._http.get<Todo[]>(`${this._baseUrl}todos`);
     }
 
-    public updateTodoReminder(todo: Todo): Observable<Todo> {
-        return this._http.put<Todo>(
+    public updateTodoReminder(todo: Todo): Observable<IUpdateTodoReminderResponse> {
+        // sending opposite of what the value was the moment I clicked the todo
+        return this._http.put<IUpdateTodoReminderResponse>(
             `${this._baseUrl}todos-reminder/${todo.id}`,
-            todo,
+            !todo.reminder,
             this._httpOptions);
     }
 
-    public editTodo(todo: Todo): Observable<EditTodoResponse> {
-        return this._http.put<EditTodoResponse>(
+    public editTodo(todo: Todo): Observable<IEditTodoResponse> {
+        return this._http.put<IEditTodoResponse>(
             `${this._baseUrl}todos-edit/${todo.id}`,
             todo,
             this._httpOptions);

@@ -19,7 +19,7 @@ public class TodoController : ControllerBase
 
     // todos
     [HttpPost]
-    public dynamic AddTodo([FromBody] Todo todo)
+    public IActionResult AddTodo([FromBody] Todo todo)
     {
         try
         {
@@ -57,7 +57,7 @@ public class TodoController : ControllerBase
 
     // todos
     [HttpGet]
-    public dynamic GetTodos()
+    public IActionResult GetTodos()
     {
         try
         {
@@ -81,7 +81,7 @@ public class TodoController : ControllerBase
 
     // todos/:id
     [HttpDelete("{id}")]
-    public dynamic DeleteTodo([FromRoute] int id)
+    public IActionResult DeleteTodo([FromRoute] int id)
     {
         try
         {
@@ -104,8 +104,36 @@ public class TodoController : ControllerBase
     }
 
     [HttpPut]
+    [Route("/todos-reminder/{id}")]
+    public IActionResult Reminder([FromBody] bool reminder, [FromRoute] int id)
+    {
+        try
+        {
+            using (IDbConnection db = new MySqlConnection(new ConnectionClass().connection_string))
+            {
+                string reminderUpdate = $@"
+                    UPDATE
+                        todos
+                    SET
+                        reminder = {reminder}
+                    WHERE
+                        id = {id};";
+
+                int rowsAffected = db.Execute(reminderUpdate, null);
+
+                return Ok(new { status = 200 });
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("error during reminder update {0}", e);
+            return BadRequest(new { error = "We're sorry there was a problem with this request" });
+        }
+    }
+
+    [HttpPut]
     [Route("/todos-edit/{id}")]
-    public dynamic Edit([FromBody] Todo todo, [FromRoute] int id)
+    public IActionResult Edit([FromBody] Todo todo, [FromRoute] int id)
     {
         try
         {

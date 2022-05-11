@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/cor
 import { Subscription } from 'rxjs';
 import { TodoService } from 'src/app/services/todo.service';
 import { UiService } from 'src/app/services/ui.service';
-import { EditTodoResponse, Todo } from 'src/interfaces';
+import { IEditTodoResponse, Todo } from 'src/interfaces';
 
 @Component({
     selector: 'app-edit-todo-form',
@@ -72,7 +72,7 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
         this._todoService
             .editTodo(edited)
             .subscribe(
-                (success: EditTodoResponse) => {
+                (success: IEditTodoResponse) => {
                     if (success.status === 200) {
                         //do this on success
                         this.onEditTodo.emit(edited);
@@ -86,7 +86,7 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
                             });
                     }
                 },
-                (error: EditTodoResponse) => {
+                (error: IEditTodoResponse) => {
                     //TODO: if errored don't clear
                     console.log("error during submit edit", error);
                     this.errorMsg = "We're sorry there was a problem with this request.";

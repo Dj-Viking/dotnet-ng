@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Todo } from 'src/interfaces';
+import { IUpdateTodoReminderResponse, Todo } from 'src/interfaces';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
     selector: 'app-todo-item',
@@ -15,20 +16,30 @@ export class TodoItemComponent implements OnInit {
     @Output() onToggleReminder: EventEmitter<Todo> = new EventEmitter();
     public faTimes = faTimes;
     public faPencil = faPencil;
-    constructor() { }
+    constructor(private _todoService: TodoService) { }
 
     ngOnInit(): void {
     }
 
-    onToggle(todo: Todo): void {
-        this.onToggleReminder.emit(todo);
+    onReminderToggle(todo: Todo): void {
+        this._todoService
+            .updateTodoReminder(todo)
+            .subscribe(
+                (_success: IUpdateTodoReminderResponse) => {
+                    this.onToggleReminder.emit(todo);
+                },
+                (error: IUpdateTodoReminderResponse) => {
+                    console.log('error', error);
+                    //TODO: toast notifications for errors
+                }
+            );
     }
 
-    onDelete(todo: Todo): void {
+    public onDelete(todo: Todo): void {
         this.onDeleteTodo.emit(todo);
     }
 
-    onOpenEdit(todo: Todo): void {
+    public onOpenEdit(todo: Todo): void {
         this.onOpenEditTodo.emit(todo);
     }
 

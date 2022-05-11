@@ -5,15 +5,21 @@ export interface Todo {
     reminder: boolean | null;
 }
 
-export type AddTodoResponse = {
+export type IAddTodoResponse = {
     status: number;
     id: number;
 } & {
-    error: unknown
+    error: unknown;
 }
 
-export type EditTodoResponse = {
+export type IEditTodoResponse = {
     status: number;
 } & {
-    error: unknown
+    error: unknown;
+}
+
+export type IUpdateTodoReminderResponse = {
+    status: number;
+} & {
+    error: unknown;
 }
