@@ -45,7 +45,6 @@ export class TodosComponent implements OnInit {
     }
 
     public openEditTodo(todo: Todo): void {
-        console.log("open edit todo", todo);
         this._uiService.toggleEditTodo(todo);
     }
 
@@ -61,9 +60,9 @@ export class TodosComponent implements OnInit {
 
     public toggleReminder(todo: Todo): void {
         todo.reminder = !todo.reminder;
-        this._todoService
-            .updateTodoReminder(todo)
-            .subscribe();
+        // this._todoService
+        //     .updateTodoReminder(todo)
+        //     .subscribe();
     }
 
 }

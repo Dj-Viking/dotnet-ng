@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AddTodoResponse, Todo } from 'src/interfaces';
+import { IAddTodoResponse, Todo } from 'src/interfaces';
 import { UiService } from 'src/app/services/ui.service';
 import { TodoService } from 'src/app/services/todo.service';
 
@@ -65,8 +65,10 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
         this._todoService
             .addTodo(todo)
             .subscribe(
-                (success: AddTodoResponse) => {
+                (success: IAddTodoResponse) => {
                     if (success.status === 200) {
+                        //close add todo form
+                        this._uiService.toggleAddTodo();
                         todo.id = success.id;
                         this.onAddTodo.emit(todo);
                         //clear the form
@@ -75,7 +77,7 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
                         this.reminder = false;
                     }
                 },
-                (error: AddTodoResponse) => {
+                (error: IAddTodoResponse) => {
                     this.errorMsg = "We're sorry there was a problem with this request.";
                     this._uiService.toggleShowAddError();
                     setTimeout(() => {
@@ -83,9 +85,5 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
                     }, 3000);
                 }
             );
-
-
     }
-
-
 }
