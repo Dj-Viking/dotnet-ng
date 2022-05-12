@@ -1,5 +1,5 @@
-<app-todos-header></app-todos-header>
-<app-add-todo-form (onAddTodo)="addTodo($event)"></app-add-todo-form>
+<app-todos-header (deleteAll)="deleteAllTodos()"></app-todos-header>
+<app-add-todo-form (onAddTodo)="addTodo()"></app-add-todo-form>
 <app-edit-todo-form (onEditTodo)="editTodo($event)"></app-edit-todo-form>
 <app-todo-item
   *ngFor="let _todo of todos"

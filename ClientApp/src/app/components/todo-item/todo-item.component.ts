@@ -18,10 +18,10 @@ export class TodoItemComponent implements OnInit {
     public faPencil = faPencil;
     constructor(private _todoService: TodoService) { }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
     }
 
-    onReminderToggle(todo: Todo): void {
+    public onReminderToggle(todo: Todo): void {
         this._todoService
             .updateTodoReminder(todo)
             .subscribe(

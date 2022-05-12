@@ -1,8 +1,15 @@
 <header>
   <h1>{{title}}</h1>
-  <app-todos-form-toggle-button
-    color="{{showAddTask ? 'red': 'green'}}"
-    text="{{showAddTask ? 'Close': 'Add Todo'}}"
-    (btnClick)="toggleAddTodo()"
-  ></app-todos-form-toggle-button>
+  <div [ngStyle]="{ 'display': 'flex', 'justify-content': 'space-between', 'width': '100%' }">
+    <app-todos-form-toggle-button
+      color="{{showAddTask ? 'red': 'green'}}"
+      text="{{showAddTask ? 'Close': 'Add Todo'}}"
+      (btnClick)="toggleAddTodo()"
+    ></app-todos-form-toggle-button>
+    <app-todos-delete-all-button
+      color="red"
+      text="Delete All"
+      (onDeleteAll)="emitDeleteAll()"
+    ></app-todos-delete-all-button>
+  </div>
 </header>

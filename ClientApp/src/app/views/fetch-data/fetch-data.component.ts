@@ -17,7 +17,7 @@ export class FetchDataComponent implements OnInit {
 
     constructor(private weatherService: WeatherService) { }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.weatherService.getWeather().subscribe((forecasts) => {
             this.forecasts = forecasts;
         })

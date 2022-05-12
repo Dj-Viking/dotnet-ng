@@ -23,3 +23,9 @@ export type IUpdateTodoReminderResponse = {
 } & {
     error: unknown;
 }
+
+export type IDeleteAllResponse = {
+    status: number;
+} & {
+    error: unknown;
+}

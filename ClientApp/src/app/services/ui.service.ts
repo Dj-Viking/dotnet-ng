@@ -19,8 +19,6 @@ export class UiService {
 
     constructor() { }
 
-
-
     public toggleShowAddError(): void {
         this._showAddError = !this._showAddError;
         this._showAddErrorSubject.next(this._showAddError);
