@@ -132,6 +132,7 @@ public class TodoController : ControllerBase
             List<int> list2 = new List<int>();
             int count = ids.Count;
             int i = 0;
+
             for (; count > 0; count--)
             {
                 i = count - 1;
