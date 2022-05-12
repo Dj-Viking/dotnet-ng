@@ -131,10 +131,10 @@ public class TodoController : ControllerBase
             List<int> list1 = new List<int>();
             List<int> list2 = new List<int>();
             int count = ids.Count;
-
+            int i = 0;
             for (; count > 0; count--)
             {
-                int i = count - 1;
+                i = count - 1;
 
                 list1.Add(ids[i]);
                 ids.RemoveAt(i);
