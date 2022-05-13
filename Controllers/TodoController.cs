@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-namespace dotnet_ng.Controllers;
 using System.Data;
 using System.Collections.Generic;
+using System.Threading;
 using Dapper;
 using dotnet_ng.Connection;
+namespace dotnet_ng.Controllers;
 
 [ApiController]
 [Route("/todos")]
@@ -109,13 +110,13 @@ public class TodoController : ControllerBase
         }
     }
 
-    private static void DeleteItem(int id)
+    private static void DeleteItem(int id, string tableName)
     {
         using (IDbConnection db = new ConnectionClass().connection)
         {
             string query = $@"
                 DELETE FROM
-                    todos
+                    {tableName}
                 WHERE   
                     id = {id};";
 
@@ -142,34 +143,37 @@ public class TodoController : ControllerBase
 
                 count--;
                 //if ids count was odd number count will be zero here (eventually)
-                if (count == 0) break;
+                if (count == 0) goto exit_splitting;
                 i = count - 1;
 
                 list2.Add(ids[i]);
                 ids.RemoveAt(i);
             }
 
-            //create 2 threads
-            Thread thread1 = new Thread(() =>
+        exit_splitting:
             {
-                for (int i = 0; i < list1.Count; i++)
+                //create 2 threads and run SQL delete from the two separate lists simultaneously
+                Thread thread1 = new Thread(() =>
                 {
-                    DeleteItem(list1[i]);
-                }
-            });
+                    for (int i = 0; i < list1.Count; i++)
+                    {
+                        DeleteItem(list1[i], "todos");
+                    }
+                });
 
-            Thread thread2 = new Thread(() =>
-            {
-                for (int i = 0; i < list2.Count; i++)
+                Thread thread2 = new Thread(() =>
                 {
-                    DeleteItem(list2[i]);
-                }
-            });
+                    for (int i = 0; i < list2.Count; i++)
+                    {
+                        DeleteItem(list2[i], "todos");
+                    }
+                });
 
-            thread1.Start();
-            thread2.Start();
+                thread1.Start();
+                thread2.Start();
 
-            return true;
+                return true;
+            }
         }
         catch (Exception e)
         {
