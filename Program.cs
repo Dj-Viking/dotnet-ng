@@ -17,15 +17,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-
-// app.MapControllerRoute(
-//     name: "Edit",
-//     pattern: "{controller}/edit/{id?}",
-//     defaults: new
-//     {
-//         controller = "Todo",
-//         action = "Edit"
-//     });
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
