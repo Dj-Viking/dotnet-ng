@@ -48,16 +48,16 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.editTodoSub.unsubscribe();
         this.editTodoContextSub.unsubscribe();
         this.showErrorSub.unsubscribe();
     }
 
-    onSubmit(): void {
+    public onSubmit(): void {
         console.log("submitted the edited todo")
         const edited = {
             id: this.id,
@@ -95,8 +95,6 @@ export class EditTodoFormComponent implements OnInit, OnDestroy {
                         this._uiService.toggleShowEditError();
                     }, 2000);
                 });
-
-
     }
 
 }

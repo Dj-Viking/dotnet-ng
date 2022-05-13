@@ -14,7 +14,7 @@ import { TodoService } from 'src/app/services/todo.service';
 // and post the new TODO in a format that works with
 // saving dates to the MYSQL database
 export class AddTodoFormComponent implements OnInit, OnDestroy {
-    @Output() onAddTodo: EventEmitter<Todo> = new EventEmitter();
+    @Output() onAddTodo = new EventEmitter<void>();
     public todo_text: string = "";
     public due_date: string = "";
     public reminder: boolean = false;
@@ -41,22 +41,21 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.addTodoSub.unsubscribe();
         this.showAddErrorSub.unsubscribe();
     }
 
-    onSubmit(): void {
+    public onSubmit(): void {
         const todo = {
             id: 0,
             todo_text: this.todo_text,
             due_date: this.due_date,
             reminder: this.reminder
         };
-        console.log("todo here", todo);
 
         //emit the todo object to the parent element which handles
         // rendering new todo elements 
@@ -69,8 +68,8 @@ export class AddTodoFormComponent implements OnInit, OnDestroy {
                     if (success.status === 200) {
                         //close add todo form
                         this._uiService.toggleAddTodo();
-                        todo.id = success.id;
-                        this.onAddTodo.emit(todo);
+                        console.log("todo id after add", success.id);
+                        this.onAddTodo.emit();
                         //clear the form
                         this.todo_text = "";
                         this.due_date = "";

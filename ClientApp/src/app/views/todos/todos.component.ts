@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Todo } from "src/interfaces";
+import { IDeleteAllResponse, Todo } from "src/interfaces";
 import { TodoService } from 'src/app/services/todo.service';
 import { UiService } from 'src/app/services/ui.service';
 
@@ -24,8 +24,12 @@ export class TodosComponent implements OnInit {
             });
     }
 
-    public addTodo(todo: Todo): void {
-        this.todos.push(todo);
+    public addTodo(): void {
+        this._todoService
+            .getTodos()
+            .subscribe(todos => {
+                this.todos = todos;
+            });
     }
 
     public editTodo(todo: Todo): void {
@@ -56,6 +60,21 @@ export class TodosComponent implements OnInit {
                     return t.id !== todo.id
                 });
             });
+    }
+
+    public deleteAllTodos(): void {
+        const ids = this.todos.map(t => t.id);
+        this._todoService
+            .deleteAllTodos(ids)
+            .subscribe(
+                (_success: IDeleteAllResponse) => {
+                    this.todos = [];
+                },
+                (error: IDeleteAllResponse) => {
+                    // TODO: notification popover to display error
+                    console.log("error while deleteing all todos", error);
+                }
+            );
     }
 
     public toggleReminder(todo: Todo): void {

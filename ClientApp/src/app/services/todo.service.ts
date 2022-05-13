@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IAddTodoResponse, IEditTodoResponse, IUpdateTodoReminderResponse, Todo } from 'src/interfaces';
+import { IAddTodoResponse, IDeleteAllResponse, IEditTodoResponse, IUpdateTodoReminderResponse, Todo } from 'src/interfaces';
 
 interface MyHttpOptions {
     headers: HttpHeaders;
@@ -17,6 +17,7 @@ export class TodoService {
             "Content-Type": "application/json"
         })
     };
+
     constructor(private _http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
         this._baseUrl = baseUrl;
     }
@@ -29,7 +30,7 @@ export class TodoService {
     }
 
     public getTodos(): Observable<Todo[]> {
-        return this._http.get<Todo[]>(`${this._baseUrl}todos`);
+        return this._http.get<Todo[]>(`${this._baseUrl}todos`)
     }
 
     public updateTodoReminder(todo: Todo): Observable<IUpdateTodoReminderResponse> {
@@ -49,7 +50,15 @@ export class TodoService {
 
     public deleteTodo(todo: Todo): Observable<Todo> {
         return this._http.delete<Todo>(
-            `${this._baseUrl}todos/${todo.id}`)
+            `${this._baseUrl}todos/${todo.id}`);
+    }
+
+    public deleteAllTodos(ids: Array<Todo["id"]>): Observable<IDeleteAllResponse> {
+        // post because can't send a body in a delete request
+        return this._http.post<IDeleteAllResponse>(
+            `${this._baseUrl}todos-delete-all`,
+            ids,
+            this._httpOptions);
     }
 
 }

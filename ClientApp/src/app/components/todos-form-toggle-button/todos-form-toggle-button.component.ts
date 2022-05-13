@@ -8,14 +8,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class TodosFormToggleButtonComponent implements OnInit {
     @Input() color!: string;
     @Input() text!: string;
-    @Output() btnClick = new EventEmitter();
+    @Output() btnClick = new EventEmitter<void>();
 
     constructor() { }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
     }
 
-    onClick(): void {
+    public onClick(): void {
         this.btnClick.emit();
     }
 }

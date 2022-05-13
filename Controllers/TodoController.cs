@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-namespace dotnet_ng.Controllers;
 using System.Data;
-using MySql.Data.MySqlClient;
+using System.Collections.Generic;
+using System.Threading;
 using Dapper;
 using dotnet_ng.Connection;
+namespace dotnet_ng.Controllers;
 
 [ApiController]
 [Route("/todos")]
@@ -38,6 +39,8 @@ public class TodoController : ControllerBase
                     VALUES(
                         '{todo.todo_text}', '{todo.due_date}', {todo.reminder});";
 
+                // race condition if don't sleep???
+                Thread.Sleep(100);
                 string select = @"SELECT LAST_INSERT_ID();";
 
                 db.Execute(insert, null);
@@ -87,7 +90,11 @@ public class TodoController : ControllerBase
         {
             using (IDbConnection db = new ConnectionClass().connection)
             {
-                string query = $"DELETE FROM todos WHERE id = {id}";
+                string query = $@"
+                    DELETE FROM 
+                        todos 
+                    WHERE 
+                        id = {id}";
 
                 db.Execute(query, null);
 
@@ -100,6 +107,99 @@ public class TodoController : ControllerBase
             Console.WriteLine("error occured during todo post request {0}", e);
 
             return BadRequest(new { message = "OH NO", status = 500 });
+        }
+    }
+
+    private static void DeleteItem(int id, string tableName)
+    {
+        using (IDbConnection db = new ConnectionClass().connection)
+        {
+            string query = $@"
+                DELETE FROM
+                    {tableName}
+                WHERE   
+                    id = {id};";
+
+            db.Execute(query, null);
+        }
+    }
+
+    private static dynamic ConcurrentDelete(List<int> ids)
+    {
+        try
+        {
+            //split original list into 2 separate lists
+            List<int> list1 = new List<int>();
+            List<int> list2 = new List<int>();
+            int count = ids.Count;
+            int i = 0;
+
+            for (; count > 0; count--)
+            {
+                i = count - 1;
+
+                list1.Add(ids[i]);
+                ids.RemoveAt(i);
+
+                count--;
+                //if ids count was odd number count will be zero here (eventually)
+                if (count == 0) goto exit_splitting;
+                i = count - 1;
+
+                list2.Add(ids[i]);
+                ids.RemoveAt(i);
+            }
+
+        exit_splitting:
+            {
+                //create 2 threads and run SQL delete from the two separate lists simultaneously
+                Thread thread1 = new Thread(() =>
+                {
+                    for (int i = 0; i < list1.Count; i++)
+                    {
+                        DeleteItem(list1[i], "todos");
+                    }
+                });
+
+                Thread thread2 = new Thread(() =>
+                {
+                    for (int i = 0; i < list2.Count; i++)
+                    {
+                        DeleteItem(list2[i], "todos");
+                    }
+                });
+
+                thread1.Start();
+                thread2.Start();
+
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("error during concurrent delete {0}", e);
+            return e;
+        }
+    }
+
+    [HttpPost]
+    [Route("/todos-delete-all")]
+    public IActionResult DeleteAll([FromBody] List<int> ids)
+    {
+        try
+        {
+            var deleteAllResult = ConcurrentDelete(ids);
+
+            if (deleteAllResult is Exception)
+                throw deleteAllResult;
+
+            return Ok(new { status = 200 });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("error during delete all {0}", e);
+
+            return BadRequest(new { error = "We're sorry there was an error with this request", status = 500 });
         }
     }
 
@@ -127,7 +227,8 @@ public class TodoController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine("error during reminder update {0}", e);
-            return BadRequest(new { error = "We're sorry there was a problem with this request" });
+
+            return BadRequest(new { error = "We're sorry there was a problem with this request", status = 500 });
         }
     }
 
