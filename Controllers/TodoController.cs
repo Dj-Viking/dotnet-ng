@@ -191,9 +191,7 @@ public class TodoController : ControllerBase
             var deleteAllResult = ConcurrentDelete(ids);
 
             if (deleteAllResult is Exception)
-            {
                 throw deleteAllResult;
-            }
 
             return Ok(new { status = 200 });
         }
