@@ -190,10 +190,12 @@ public class TodoController : ControllerBase
         {
             var deleteAllResult = ConcurrentDelete(ids);
 
-            if (deleteAllResult == true)
-                return Ok(new { status = 200 });
-            else
-                throw new Exception("Could not concurrently delete todos with error: {0}", deleteAllResult);
+            if (deleteAllResult is Exception)
+            {
+                throw deleteAllResult;
+            }
+
+            return Ok(new { status = 200 });
         }
         catch (Exception e)
         {
