@@ -8,7 +8,7 @@ import { UiService } from 'src/app/services/ui.service';
     styleUrls: ['./todos-header.component.css']
 })
 export class TodosHeaderComponent implements OnInit {
-    @Output() deleteAll = new EventEmitter<void>();
+    @Output() onDeleteAll = new EventEmitter<void>();
     public title: string = "TODOS"
     public showAddTask: boolean = false;
     public subscription!: Subscription;
@@ -29,6 +29,6 @@ export class TodosHeaderComponent implements OnInit {
     }
 
     public emitDeleteAll(): void {
-        this.deleteAll.emit();
+        this.onDeleteAll.emit();
     }
 }

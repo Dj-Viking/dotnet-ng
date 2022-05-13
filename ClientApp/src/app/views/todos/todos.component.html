@@ -1,4 +1,4 @@
-<app-todos-header (deleteAll)="deleteAllTodos()"></app-todos-header>
+<app-todos-header (onDeleteAll)="deleteAllTodos()"></app-todos-header>
 <app-add-todo-form (onAddTodo)="addTodo()"></app-add-todo-form>
 <app-edit-todo-form (onEditTodo)="editTodo($event)"></app-edit-todo-form>
 <app-todo-item
@@ -7,6 +7,4 @@
   (onDeleteTodo)="deleteTodo(_todo)"
   (onToggleReminder)="toggleReminder(_todo)"
   (onOpenEditTodo)="openEditTodo(_todo)"
->
-
-</app-todo-item>
+></app-todo-item>
