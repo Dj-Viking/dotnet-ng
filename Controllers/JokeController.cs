@@ -27,33 +27,35 @@ public class JokeController : ControllerBase
     {
         try
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris");
-
-            HttpResponseMessage httpRes = await httpClient.GetAsync(
-                "/jokes/random");
-
-            if (httpRes.IsSuccessStatusCode)
+            using (HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris"))
             {
-                using Stream contentStream =
-                    await httpRes.Content.ReadAsStreamAsync();
+                HttpResponseMessage httpRes = await httpClient.GetAsync(
+                    "/jokes/random");
 
-                if (contentStream is not null)
+                if (httpRes.IsSuccessStatusCode)
                 {
-                    Joke? joke =
-                        await JsonSerializer
-                        .DeserializeAsync<Joke>(contentStream)!;
+                    using Stream contentStream =
+                        await httpRes.Content.ReadAsStreamAsync();
 
-                    return Ok(new { joke = joke });
+                    if (contentStream is not null)
+                    {
+                        Joke? joke =
+                            await JsonSerializer
+                            .DeserializeAsync<Joke>(contentStream)!;
+
+                        return Ok(new { joke = joke });
+                    }
+                    else
+                    {
+                        return BadRequest(new { status = 500, error = "content stream was null" });
+                    }
                 }
                 else
                 {
-                    return BadRequest(new { status = 500, error = "content stream was null" });
+                    return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
                 }
             }
-            else
-            {
-                return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
-            }
+
 
         }
         catch (Exception e)
@@ -70,33 +72,35 @@ public class JokeController : ControllerBase
     {
         try
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris");
-
-            HttpResponseMessage httpRes = await httpClient.GetAsync(
-                "/jokes/categories");
-
-            if (httpRes.IsSuccessStatusCode)
+            using (HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris"))
             {
-                using Stream contentStream =
-                    await httpRes.Content.ReadAsStreamAsync();
+                HttpResponseMessage httpRes = await httpClient.GetAsync(
+                    "/jokes/categories");
 
-                if (contentStream is not null)
+                if (httpRes.IsSuccessStatusCode)
                 {
-                    List<string>? categories =
-                        await JsonSerializer
-                        .DeserializeAsync<List<string>>(contentStream)!;
+                    using Stream contentStream =
+                        await httpRes.Content.ReadAsStreamAsync();
 
-                    return Ok(new { categories = categories });
+                    if (contentStream is not null)
+                    {
+                        List<string>? categories =
+                            await JsonSerializer
+                            .DeserializeAsync<List<string>>(contentStream)!;
+
+                        return Ok(new { categories = categories });
+                    }
+                    else
+                    {
+                        return BadRequest(new { status = 500, error = "content stream was null" });
+                    }
                 }
                 else
                 {
-                    return BadRequest(new { status = 500, error = "content stream was null" });
+                    return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
                 }
             }
-            else
-            {
-                return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
-            }
+
         }
         catch (Exception e)
         {
@@ -112,33 +116,35 @@ public class JokeController : ControllerBase
     {
         try
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris");
-
-            HttpResponseMessage httpRes = await httpClient.GetAsync(
-                $"/jokes/random?category={category}");
-
-            if (httpRes.IsSuccessStatusCode)
+            using (HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris"))
             {
-                using Stream contentStream =
-                    await httpRes.Content.ReadAsStreamAsync();
+                HttpResponseMessage httpRes = await httpClient.GetAsync(
+                    $"/jokes/random?category={category}");
 
-                if (contentStream is not null)
+                if (httpRes.IsSuccessStatusCode)
                 {
-                    Joke? joke =
-                        await JsonSerializer
-                        .DeserializeAsync<Joke>(contentStream)!;
+                    using Stream contentStream =
+                        await httpRes.Content.ReadAsStreamAsync();
 
-                    return Ok(new { joke = joke });
+                    if (contentStream is not null)
+                    {
+                        Joke? joke =
+                            await JsonSerializer
+                            .DeserializeAsync<Joke>(contentStream)!;
+
+                        return Ok(new { joke = joke });
+                    }
+                    else
+                    {
+                        return BadRequest(new { status = 500, error = "content stream was null" });
+                    }
                 }
                 else
                 {
-                    return BadRequest(new { status = 500, error = "content stream was null" });
+                    return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
                 }
             }
-            else
-            {
-                return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
-            }
+
         }
         catch (Exception e)
         {
