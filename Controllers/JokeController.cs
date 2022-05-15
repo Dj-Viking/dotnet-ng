@@ -7,6 +7,7 @@ namespace dotnet_ng.Controllers;
 
 
 [ApiController]
+[Route("/joke")]
 public class JokeController : ControllerBase
 {
     private readonly ILogger<JokeController> _logger;
@@ -22,7 +23,6 @@ public class JokeController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/joke-random")]
     public async Task<IActionResult> GetRandomJoke()
     {
         try
@@ -41,7 +41,7 @@ public class JokeController : ControllerBase
                     {
                         Joke? joke =
                             await JsonSerializer
-                            .DeserializeAsync<Joke>(contentStream)!;
+                                .DeserializeAsync<Joke>(contentStream)!;
 
                         return Ok(new { joke = joke });
                     }
@@ -86,7 +86,7 @@ public class JokeController : ControllerBase
                     {
                         List<string>? categories =
                             await JsonSerializer
-                            .DeserializeAsync<List<string>>(contentStream)!;
+                                .DeserializeAsync<List<string>>(contentStream)!;
 
                         return Ok(new { categories = categories });
                     }
@@ -130,7 +130,7 @@ public class JokeController : ControllerBase
                     {
                         Joke? joke =
                             await JsonSerializer
-                            .DeserializeAsync<Joke>(contentStream)!;
+                                .DeserializeAsync<Joke>(contentStream)!;
 
                         return Ok(new { joke = joke });
                     }
