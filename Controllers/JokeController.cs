@@ -43,7 +43,7 @@ public class JokeController : ControllerBase
                         await JsonSerializer
                         .DeserializeAsync<Joke>(contentStream)!;
 
-                    return Ok(joke);
+                    return Ok(new { joke = joke });
                 }
                 else
                 {
@@ -87,6 +87,48 @@ public class JokeController : ControllerBase
                         .DeserializeAsync<List<string>>(contentStream)!;
 
                     return Ok(new { categories = categories });
+                }
+                else
+                {
+                    return BadRequest(new { status = 500, error = "content stream was null" });
+                }
+            }
+            else
+            {
+                return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
+            }
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine("error getting jokes {0}", e);
+
+            return BadRequest(new { status = 500, error = e });
+        }
+    }
+    [HttpGet]
+    [Route("/joke-by-category/{category}")]
+    public async Task<IActionResult> GetJokeByCategory([FromRoute] string category)
+    {
+        try
+        {
+            HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris");
+
+            HttpResponseMessage httpRes = await httpClient.GetAsync(
+                $"/jokes/random?category={category}");
+
+            if (httpRes.IsSuccessStatusCode)
+            {
+                using Stream contentStream =
+                    await httpRes.Content.ReadAsStreamAsync();
+
+                if (contentStream is not null)
+                {
+                    Joke? joke =
+                        await JsonSerializer
+                        .DeserializeAsync<Joke>(contentStream)!;
+
+                    return Ok(new { joke = joke });
                 }
                 else
                 {

@@ -1,4 +1,3 @@
-using System.Net.Http;
 namespace dotnet_ng;
 
 class Joke
