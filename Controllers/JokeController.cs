@@ -59,6 +59,50 @@ public class JokeController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine("error getting jokes {0}", e);
+
+            return BadRequest(new { status = 500, error = e });
+        }
+    }
+
+    [HttpGet]
+    [Route("/joke-categories")]
+    public async Task<IActionResult> GetCategories()
+    {
+        try
+        {
+            HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris");
+
+            HttpResponseMessage httpRes = await httpClient.GetAsync(
+                "/jokes/categories");
+
+            if (httpRes.IsSuccessStatusCode)
+            {
+                using Stream contentStream =
+                    await httpRes.Content.ReadAsStreamAsync();
+
+                if (contentStream is not null)
+                {
+                    List<string>? categories =
+                        await JsonSerializer
+                        .DeserializeAsync<List<string>>(contentStream)!;
+
+                    return Ok(new { categories = categories });
+                }
+                else
+                {
+                    return BadRequest(new { status = 500, error = "content stream was null" });
+                }
+            }
+            else
+            {
+                return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
+            }
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine("error getting jokes {0}", e);
+
             return BadRequest(new { status = 500, error = e });
         }
     }
