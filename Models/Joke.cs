@@ -2,6 +2,9 @@ namespace dotnet_ng;
 
 class Joke
 {
+    public List<string>? categories { get; set; }
+
+    public string? created_at { get; set; }
     public string? icon_url { get; set; }
 
     public string? id { get; set; }
