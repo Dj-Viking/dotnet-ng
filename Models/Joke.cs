@@ -1,0 +1,14 @@
+using System.Net.Http;
+namespace dotnet_ng;
+
+class Joke
+{
+    public string? icon_url { get; set; }
+
+    public string? id { get; set; }
+
+    public string? url { get; set; }
+
+    public string? value { get; set; }
+
+}

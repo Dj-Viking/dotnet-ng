@@ -1,8 +1,16 @@
+using Microsoft.Net.Http.Headers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient("chuck_norris", httpClient =>
+{
+    httpClient.BaseAddress = new Uri("https://api.chucknorris.io");
+
+    httpClient.DefaultRequestHeaders.Add(
+        HeaderNames.Accept, "application/json");
+});
 
 var app = builder.Build();
 
