@@ -26,7 +26,11 @@ export class JokeService {
     }
 
     public getRandomJoke(): Observable<IGetRandomJokeResponse> {
-        return this._http.get<IGetRandomJokeResponse>(
-            `${this._baseUrl}joke`);
+        //using post since GET on the SPA proxy is very unpredictable and unstable not sure how to configure this properly
+        // POST works just fine
+        return this._http.post<IGetRandomJokeResponse>(
+            `${this._baseUrl}joke`,
+            {},
+            this._httpOptions);
     }
 }

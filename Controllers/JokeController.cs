@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net.Http;
 using System.Text.Json;
-using dotnet_ng.Connection;
 namespace dotnet_ng.Controllers;
 
 
@@ -22,7 +21,8 @@ public class JokeController : ControllerBase
         _httpClientFactory = httpClientFactory;
     }
 
-    [HttpGet]
+    [HttpPost]
+    [Route("/joke")]
     public async Task<IActionResult> GetRandomJoke()
     {
         try
