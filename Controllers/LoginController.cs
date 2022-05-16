@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
 using System.Text;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using dotnet_ng.Connection;
 
 namespace dotnet_ng.Controllers;
 
@@ -27,6 +29,9 @@ public class LoginController : ControllerBase
     [HttpPost]
     public IActionResult Login([FromBody] UserLogin userLogin)
     {
+        // TODO: query a previously inserted 
+        // user from database instead of hard coded mock user
+
         User? user = Authenticate(userLogin);
 
         if (user is not null)
@@ -38,7 +43,7 @@ public class LoginController : ControllerBase
         return NotFound("user not found");
     }
 
-    private User? Authenticate(UserLogin userLogin)
+    private static User? Authenticate(UserLogin userLogin)
     {
         User? currentUser = UserConstants.users.FirstOrDefault(o =>
             o?.username?.ToLower() == userLogin?.username?.ToLower()
@@ -50,7 +55,7 @@ public class LoginController : ControllerBase
             return null;
     }
 
-    private string Generate(User user)
+    private static string Generate(User user)
     {
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes("Dhft0S5uphK3vmCJQrexSt1RsyjZBjXWRgJMFPU4"));
