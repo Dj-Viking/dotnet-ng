@@ -7,7 +7,7 @@ using dotnet_ng.Connection;
 namespace dotnet_ng.Controllers;
 
 [ApiController]
-[Route("/todos")]
+[Route("/api/todos")]
 public class TodoController : ControllerBase
 {
 
@@ -183,7 +183,7 @@ public class TodoController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/todos-delete-all")]
+    [Route("/api/todos-delete-all")]
     public IActionResult DeleteAll([FromBody] List<int> ids)
     {
         try
@@ -204,7 +204,7 @@ public class TodoController : ControllerBase
     }
 
     [HttpPut]
-    [Route("/todos-reminder/{id}")]
+    [Route("/api/todos-reminder/{id}")]
     public IActionResult Reminder([FromBody] bool reminder, [FromRoute] int id)
     {
         try
@@ -233,7 +233,7 @@ public class TodoController : ControllerBase
     }
 
     [HttpPut]
-    [Route("/todos-edit/{id}")]
+    [Route("/api/todos-edit/{id}")]
     public IActionResult Edit([FromBody] Todo todo, [FromRoute] int id)
     {
         try

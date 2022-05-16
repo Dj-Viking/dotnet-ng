@@ -6,7 +6,6 @@ namespace dotnet_ng.Controllers;
 
 
 [ApiController]
-[Route("/joke")]
 public class JokeController : ControllerBase
 {
     private readonly ILogger<JokeController> _logger;
@@ -21,8 +20,8 @@ public class JokeController : ControllerBase
         _httpClientFactory = httpClientFactory;
     }
 
-    [HttpPost]
-    [Route("/joke")]
+    [HttpGet]
+    [Route("/api/joke")]
     public async Task<IActionResult> GetRandomJoke()
     {
         try
@@ -67,7 +66,7 @@ public class JokeController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/joke-categories")]
+    [Route("/api/joke-categories")]
     public async Task<IActionResult> GetCategories()
     {
         try
@@ -111,7 +110,7 @@ public class JokeController : ControllerBase
         }
     }
     [HttpGet]
-    [Route("/joke-by-category/{category}")]
+    [Route("/api/joke-by-category/{category}")]
     public async Task<IActionResult> GetJokeByCategory([FromRoute] string category)
     {
         try

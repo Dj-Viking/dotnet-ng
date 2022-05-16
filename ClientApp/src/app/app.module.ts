@@ -49,7 +49,7 @@ import { JokeItemComponent } from './components/joke-item/joke-item.component';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'todo-list', component: TodosComponent },
-            { path: 'joke-list', component: JokesComponent },
+            { path: 'jokes-list', component: JokesComponent },
         ]),
         FontAwesomeModule
     ],
