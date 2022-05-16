@@ -20,6 +20,59 @@ public class JokeController : ControllerBase
         _httpClientFactory = httpClientFactory;
     }
 
+    private async Task<dynamic> HandleJokeApi(HttpClient httpClient, string urlSuffix, string type)
+    {
+        HttpResponseMessage httpRes =
+            await httpClient.GetAsync(urlSuffix);
+
+        if (httpRes.IsSuccessStatusCode)
+        {
+            using Stream contentStream =
+                await httpRes.Content.ReadAsStreamAsync();
+
+            if (contentStream is not null)
+            {
+                switch (type)
+                {
+                    case "random":
+                        {
+                            Joke? joke =
+                                await JsonSerializer
+                                    .DeserializeAsync<Joke>(contentStream)!;
+
+                            return joke!;
+                        }
+                    case "categories":
+                        {
+                            List<string>? categories =
+                                await JsonSerializer
+                                    .DeserializeAsync<List<string>>(contentStream)!;
+
+                            return categories!;
+                        }
+                    case "joke-with-category":
+                        {
+                            Joke? joke =
+                                await JsonSerializer
+                                    .DeserializeAsync<Joke>(contentStream)!;
+                            return joke!;
+                        }
+                }
+
+                return new Exception("did not pass valid query type");
+
+            }
+            else
+            {
+                return BadRequest(new { status = 500, error = "content stream was null" });
+            }
+        }
+        else
+        {
+            return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
+        }
+    }
+
     [HttpGet]
     [Route("/api/joke")]
     public async Task<IActionResult> GetRandomJoke()
@@ -28,34 +81,15 @@ public class JokeController : ControllerBase
         {
             using (HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris"))
             {
-                HttpResponseMessage httpRes = await httpClient.GetAsync(
-                    "/jokes/random");
+                var result = await HandleJokeApi(httpClient, "/jokes/random", "random");
 
-                if (httpRes.IsSuccessStatusCode)
-                {
-                    using Stream contentStream =
-                        await httpRes.Content.ReadAsStreamAsync();
+                if (result is Exception)
+                    return BadRequest(new { error = result });
 
-                    if (contentStream is not null)
-                    {
-                        Joke? joke =
-                            await JsonSerializer
-                                .DeserializeAsync<Joke>(contentStream)!;
-
-                        return Ok(new { joke = joke });
-                    }
-                    else
-                    {
-                        return BadRequest(new { status = 500, error = "content stream was null" });
-                    }
-                }
                 else
-                {
-                    return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
-                }
+                    return Ok(new { joke = result });
+
             }
-
-
         }
         catch (Exception e)
         {
@@ -73,31 +107,13 @@ public class JokeController : ControllerBase
         {
             using (HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris"))
             {
-                HttpResponseMessage httpRes = await httpClient.GetAsync(
-                    "/jokes/categories");
+                var result = await HandleJokeApi(httpClient, "/jokes/categories", "categories");
 
-                if (httpRes.IsSuccessStatusCode)
-                {
-                    using Stream contentStream =
-                        await httpRes.Content.ReadAsStreamAsync();
+                if (result is Exception)
+                    return BadRequest(new { error = result });
 
-                    if (contentStream is not null)
-                    {
-                        List<string>? categories =
-                            await JsonSerializer
-                                .DeserializeAsync<List<string>>(contentStream)!;
-
-                        return Ok(new { categories = categories });
-                    }
-                    else
-                    {
-                        return BadRequest(new { status = 500, error = "content stream was null" });
-                    }
-                }
                 else
-                {
-                    return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
-                }
+                    return Ok(new { categories = result });
             }
 
         }
@@ -117,31 +133,12 @@ public class JokeController : ControllerBase
         {
             using (HttpClient httpClient = _httpClientFactory.CreateClient("chuck_norris"))
             {
-                HttpResponseMessage httpRes = await httpClient.GetAsync(
-                    $"/jokes/random?category={category}");
+                var result = await HandleJokeApi(httpClient, $"/jokes/random?category={category}", "joke-with-category");
 
-                if (httpRes.IsSuccessStatusCode)
-                {
-                    using Stream contentStream =
-                        await httpRes.Content.ReadAsStreamAsync();
-
-                    if (contentStream is not null)
-                    {
-                        Joke? joke =
-                            await JsonSerializer
-                                .DeserializeAsync<Joke>(contentStream)!;
-
-                        return Ok(new { joke = joke });
-                    }
-                    else
-                    {
-                        return BadRequest(new { status = 500, error = "content stream was null" });
-                    }
-                }
+                if (result is Exception)
+                    return BadRequest(new { error = result });
                 else
-                {
-                    return BadRequest(new { status = httpRes.StatusCode, error = "there was a problem fetching from chuck norris api" });
-                }
+                    return Ok(new { joke = result });
             }
 
         }
