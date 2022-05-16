@@ -18,7 +18,10 @@ export class TodoService {
         })
     };
 
-    constructor(private _http: HttpClient, @Inject("BASE_URL") baseUrl: string) {
+    constructor(
+        private _http: HttpClient,
+        @Inject("BASE_URL") baseUrl: string
+    ) {
         this._baseUrl = baseUrl;
     }
 

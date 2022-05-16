@@ -17,6 +17,9 @@ import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditTodoFormComponent } from './components/edit-todo-form/edit-todo-form.component';
 import { TodosDeleteAllButtonComponent } from './components/todos-delete-all-button/todos-delete-all-button.component';
+import { JokesComponent } from './views/jokes/jokes.component';
+import { JokesHeaderComponent } from './components/jokes-header/jokes-header.component';
+import { JokeItemComponent } from './components/joke-item/joke-item.component';
 
 
 @NgModule({
@@ -33,6 +36,9 @@ import { TodosDeleteAllButtonComponent } from './components/todos-delete-all-but
         TodoItemComponent,
         EditTodoFormComponent,
         TodosDeleteAllButtonComponent,
+        JokesComponent,
+        JokesHeaderComponent,
+        JokeItemComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -43,6 +49,7 @@ import { TodosDeleteAllButtonComponent } from './components/todos-delete-all-but
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'todo-list', component: TodosComponent },
+            { path: 'jokes-list', component: JokesComponent },
         ]),
         FontAwesomeModule
     ],

@@ -4,6 +4,14 @@ export interface Todo {
     todo_text: string | null;
     reminder: boolean | null;
 }
+export interface Joke {
+    created_at: string;
+    categories: Array<string>;
+    icon_url: string;
+    id: string;
+    url: string;
+    value: string;
+}
 
 export type IAddTodoResponse = {
     status: number;
@@ -26,6 +34,13 @@ export type IUpdateTodoReminderResponse = {
 
 export type IDeleteAllResponse = {
     status: number;
+} & {
+    error: unknown;
+}
+
+export type IGetRandomJokeResponse = {
+    status: number;
+    joke: Joke
 } & {
     error: unknown;
 }

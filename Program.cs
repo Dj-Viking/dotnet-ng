@@ -1,10 +1,31 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.Net.Http.Headers;
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient("chuck_norris", httpClient =>
+{
+    httpClient.BaseAddress = new Uri("https://api.chucknorris.io");
 
-var app = builder.Build();
+    httpClient.DefaultRequestHeaders.Add(
+        HeaderNames.Accept, "application/json");
+});
+
+string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:44456")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
+});
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -16,12 +37,14 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors(MyAllowSpecificOrigins);
+
+app.MapFallbackToFile("index.html");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 
-app.MapFallbackToFile("index.html");
 
 app.Run();
