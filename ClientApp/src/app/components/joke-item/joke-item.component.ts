@@ -18,13 +18,8 @@ export class JokeItemComponent implements OnInit {
 
     }
 
-    ngOnInit(): void {
-        this.created_at = this.joke.created_at;
-        this.categories = this.joke.categories;
-        this.icon_url = this.joke.icon_url;
-        this.id = this.joke.id;
-        this.url = this.joke.url;
-        this.value = this.joke.value;
+    public ngOnInit(): void {
+        Object.assign(this, { ...this, ...this.joke })
     }
 
 }
