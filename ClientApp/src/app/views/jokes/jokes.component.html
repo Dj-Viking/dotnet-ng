@@ -1,5 +1,6 @@
 <app-jokes-header
     (onButtonGetJokeEmit)="onGetJokeFromButtonEmit($event)"
+    (onSelectGetJokeEmit)="onGetJokeFromSelectEmit($event)"
     title="JOKES"
 ></app-jokes-header>
 <div *ngFor="let _joke of jokes">

@@ -1,0 +1,17 @@
+<select
+    name="categories"
+    id="categories"
+    (change)="onSelect($event)"
+>
+    <option
+        selected
+        disabled
+        value=""
+    >Select A Category</option>
+    <option
+        *ngFor="let category of categories"
+        value={{category}}
+    >
+        {{category}}
+    </option>
+</select>

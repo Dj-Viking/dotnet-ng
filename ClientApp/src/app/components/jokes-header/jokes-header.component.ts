@@ -10,6 +10,7 @@ export class JokesHeaderComponent implements OnInit {
 
     @Input() title!: string;
     @Output() onButtonGetJokeEmit = new EventEmitter<Joke>();
+    @Output() onSelectGetJokeEmit = new EventEmitter<string>();
 
     constructor() { }
 
@@ -19,6 +20,10 @@ export class JokesHeaderComponent implements OnInit {
     public onButtonGetJoke(joke: Joke): void {
         console.log("got emitted joke from the button child component", joke);
         this.onButtonGetJokeEmit.emit(joke);
+    }
+
+    public onSelectGetJoke(category: string): void {
+        this.onSelectGetJokeEmit.emit(category);
     }
 
 }

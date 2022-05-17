@@ -9,14 +9,15 @@ import { IGetRandomJokeResponse, Joke } from 'src/interfaces';
 })
 export class JokeGetButtonComponent implements OnInit {
     @Output() onGetJoke = new EventEmitter<Joke>();
+    public selectedCategory: string = "";
 
-    constructor(private jokeService: JokeService) { }
+    constructor(private _jokeService: JokeService) { }
 
     ngOnInit(): void {
     }
 
     public getJoke(): void {
-        this.jokeService
+        this._jokeService
             .getRandomJoke()
             .subscribe(
                 (_success: IGetRandomJokeResponse) => {

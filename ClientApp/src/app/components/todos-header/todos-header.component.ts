@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UiService } from 'src/app/services/ui.service';
 
@@ -7,14 +7,14 @@ import { UiService } from 'src/app/services/ui.service';
     templateUrl: './todos-header.component.html',
     styleUrls: ['./todos-header.component.css']
 })
-export class TodosHeaderComponent implements OnInit {
+export class TodosHeaderComponent implements OnInit, OnDestroy {
     @Output() onDeleteAll = new EventEmitter<void>();
     public title: string = "TODOS"
     public showAddTask: boolean = false;
-    public subscription!: Subscription;
+    public showAddTaskSub!: Subscription;
 
     constructor(private uiService: UiService) {
-        this.subscription = this.uiService
+        this.showAddTaskSub = this.uiService
             .onToggle()
             .subscribe(value => {
                 this.showAddTask = value;
@@ -22,6 +22,10 @@ export class TodosHeaderComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+    }
+
+    public ngOnDestroy(): void {
+        this.showAddTaskSub.unsubscribe();
     }
 
     public toggleAddTodo(): void {

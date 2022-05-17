@@ -44,3 +44,16 @@ export type IGetRandomJokeResponse = {
 } & {
     error: unknown;
 }
+
+export type IGetCategoriesResponse = {
+    status: number;
+    categories: Array<string>;
+} & {
+    error: unknown;
+}
+export type IGetJokeByCategoryResponse = {
+    status: number;
+    joke: Joke;
+} & {
+    error: unknown;
+}

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 import { JokeService } from 'src/app/services/joke.service';
-import { IGetRandomJokeResponse, Joke } from 'src/interfaces';
+import { IGetJokeByCategoryResponse, IGetRandomJokeResponse, Joke } from 'src/interfaces';
 
 @Component({
     selector: 'app-jokes',
@@ -9,8 +10,10 @@ import { IGetRandomJokeResponse, Joke } from 'src/interfaces';
 })
 export class JokesComponent implements OnInit {
     public jokes: Joke[] = [];
+    public selectedCategory: string = "";
 
-    constructor(private _jokeService: JokeService) { }
+    constructor(private _jokeService: JokeService) {
+    }
 
     ngOnInit(): void {
         this._jokeService
@@ -27,6 +30,19 @@ export class JokesComponent implements OnInit {
 
     onGetJokeFromButtonEmit(joke: Joke): void {
         this.jokes.push(joke);
+    }
+
+    onGetJokeFromSelectEmit(category: string): void {
+        this._jokeService
+            .getJokeByCategory(category)
+            .subscribe(
+                (success: IGetJokeByCategoryResponse) => {
+                    this.jokes.push(success.joke);
+                },
+                (error: IGetJokeByCategoryResponse) => {
+                    console.log("error when getting joke by select", error);
+                }
+            )
     }
 
 }
