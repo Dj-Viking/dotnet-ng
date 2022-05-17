@@ -20,6 +20,8 @@ import { TodosDeleteAllButtonComponent } from './components/todos-delete-all-but
 import { JokesComponent } from './views/jokes/jokes.component';
 import { JokesHeaderComponent } from './components/jokes-header/jokes-header.component';
 import { JokeItemComponent } from './components/joke-item/joke-item.component';
+import { JokeGetButtonComponent } from './components/joke-get-button/joke-get-button.component';
+import { JokeCategorySelectComponent } from './components/joke-category-select/joke-category-select.component';
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import { JokeItemComponent } from './components/joke-item/joke-item.component';
         JokesComponent,
         JokesHeaderComponent,
         JokeItemComponent,
+        JokeGetButtonComponent,
+        JokeCategorySelectComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

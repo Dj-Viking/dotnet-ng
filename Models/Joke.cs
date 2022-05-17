@@ -1,6 +1,6 @@
 namespace dotnet_ng;
 
-class Joke
+public class Joke
 {
     public List<string>? categories { get; set; }
 

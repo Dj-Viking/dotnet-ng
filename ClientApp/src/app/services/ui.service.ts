@@ -10,14 +10,26 @@ export class UiService {
     private _showEditTodo: boolean = false;
     private _todoContext!: Todo;
     private _showEditError: boolean = false;
-    private _showEditErrorSubject = new Subject<boolean>();
+    private _isLoading: boolean = false;
     private _showAddError: boolean = false;
+
+    private _showEditErrorSubject = new Subject<boolean>();
     private _showAddErrorSubject = new Subject<boolean>();
     private _addTodoSubject = new Subject<boolean>();
     private _editTodoSubject = new Subject<boolean>();
+    private _isLoadingSubject = new Subject<boolean>();
     private _todoContextSubject = new Subject<Todo>();
 
     constructor() { }
+
+    public onToggleIsLoading(): void {
+        this._isLoading = !this._isLoading;
+        this._isLoadingSubject.next(this._isLoading);
+    }
+
+    public toggleIsLoading(): Observable<boolean> {
+        return this._isLoadingSubject.asObservable();
+    }
 
     public toggleShowAddError(): void {
         this._showAddError = !this._showAddError;

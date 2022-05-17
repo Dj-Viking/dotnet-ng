@@ -1,5 +1,9 @@
-<div [ngStyle]="{'display': 'flex', 'width': '100%', 'justify-content': 'center'}">
-    <h1>
-        {{title}}
-    </h1>
+<div [ngStyle]="{'display': 'flex', 'width': '100%', 'justify-content': 'center' }">
+    <div [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center'}">
+        <h1>
+            {{title}}
+        </h1>
+        <app-joke-get-button (onGetJoke)="onButtonGetJoke($event)"></app-joke-get-button>
+        <app-joke-category-select (onSelectEmit)="onSelectGetJoke($event)"></app-joke-category-select>
+    </div>
 </div>

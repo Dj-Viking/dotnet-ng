@@ -1,3 +1,9 @@
-<p>
-    {{value}}
-</p>
+<span>
+    <div *ngIf="categories.length">
+        <span [ngStyle]="{'color': 'black'}">Category: </span>
+        <span [ngStyle]="{'color': 'blue'}">{{categories[0]}}</span>
+    </div>
+    <span>
+        {{value}}
+    </span>
+</span>
