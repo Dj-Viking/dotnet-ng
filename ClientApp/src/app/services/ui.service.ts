@@ -11,8 +11,9 @@ export class UiService {
     private _todoContext!: Todo;
     private _showEditError: boolean = false;
     private _isLoading: boolean = false;
-    private _showEditErrorSubject = new Subject<boolean>();
     private _showAddError: boolean = false;
+
+    private _showEditErrorSubject = new Subject<boolean>();
     private _showAddErrorSubject = new Subject<boolean>();
     private _addTodoSubject = new Subject<boolean>();
     private _editTodoSubject = new Subject<boolean>();

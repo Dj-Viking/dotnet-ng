@@ -12,7 +12,8 @@ interface MyHttpOptions {
 })
 export class JokeService {
     private _baseUrl!: string;
-    private _categorySubject!: Subject<string>;
+    private categorySelect: string = "";
+    private _categorySubject = new Subject<string>();
 
     constructor(
         private _http: HttpClient,
@@ -34,11 +35,18 @@ export class JokeService {
     }
 
     public getJokeByCategory(category: string): Observable<IGetJokeByCategoryResponse> {
-        // this._categorySubject.next(category);
+        this._categorySubject.next(category);
         return this._http.get<IGetJokeByCategoryResponse>(
             `${this._baseUrl}joke-by-category/${category}`);
     }
+
+    public changeCategorySelect(category: string): void {
+        this.categorySelect = category;
+        this._categorySubject.next(this.categorySelect);
+    }
+
     public onCategorySelect(): Observable<string> {
+        console.log("value of category as subject observable", this._categorySubject.asObservable());
         return this._categorySubject.asObservable();
     }
 }

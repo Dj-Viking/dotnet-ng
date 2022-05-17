@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { JokeService } from 'src/app/services/joke.service';
 import { IGetCategoriesResponse } from 'src/interfaces';
 
@@ -12,8 +13,11 @@ export class JokeCategorySelectComponent implements OnInit {
     @Output() onSelectEmit = new EventEmitter<string>();
     public categories: Array<string> = [];
     public selected: string = "";
+    public categorySub!: Subscription;
 
-    constructor(private _jokeService: JokeService) { }
+    constructor(private _jokeService: JokeService) {
+
+    }
 
     ngOnInit(): void {
         this._jokeService
@@ -35,6 +39,12 @@ export class JokeCategorySelectComponent implements OnInit {
         console.log("event", event.type, event.target?.value);
         this.selected = event.target.value
         this.onSelectEmit.emit(this.selected);
+        this._jokeService.changeCategorySelect(this.selected);
+        this._jokeService
+            .onCategorySelect()
+            .subscribe(value => {
+                console.log("value observed after set next on select", value);
+            })
     }
 
 }
