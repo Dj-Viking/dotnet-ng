@@ -10,14 +10,14 @@ import { IGetJokeByCategoryResponse, IGetRandomJokeResponse, Joke } from 'src/in
 })
 export class JokesComponent implements OnInit {
     public jokes: Joke[] = [];
-    public selectedCategory: string = "";
+    public selectedCategory: string = "dev";
 
     constructor(private _jokeService: JokeService) {
     }
 
     ngOnInit(): void {
         this._jokeService
-            .getRandomJoke()
+            .getJokeByCategory("dev")
             .subscribe(
                 (success: IGetRandomJokeResponse) => {
                     this.jokes.push(success.joke);
