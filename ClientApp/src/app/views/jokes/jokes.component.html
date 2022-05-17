@@ -1,4 +1,7 @@
-<app-jokes-header title="JOKES"></app-jokes-header>
+<app-jokes-header
+    (onButtonGetJokeEmit)="onGetJokeFromButtonEmit($event)"
+    title="JOKES"
+></app-jokes-header>
 <div *ngFor="let _joke of jokes">
     <app-joke-item [joke]="_joke"></app-joke-item>
 </div>

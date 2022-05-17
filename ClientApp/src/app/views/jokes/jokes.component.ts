@@ -25,4 +25,8 @@ export class JokesComponent implements OnInit {
             )
     }
 
+    onGetJokeFromButtonEmit(joke: Joke): void {
+        this.jokes.push(joke);
+    }
+
 }
