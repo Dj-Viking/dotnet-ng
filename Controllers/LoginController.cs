@@ -35,7 +35,7 @@ public class LoginController : ControllerBase
         var authResult = Authenticate(userLogin);
         if (authResult is Exception)
         {
-            return BadRequest(new { error = "Incorrect Credentials" });
+            return BadRequest(new { error = authResult });
         }
 
         if (authResult is not null)
@@ -49,8 +49,11 @@ public class LoginController : ControllerBase
 
     public static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
     {
-        var saltBytes = Convert.FromBase64String(storedSalt);
-        var rfc2898DeriveBytes = new Rfc2898DeriveBytes(enteredPassword, saltBytes, 10000);
+        byte[] saltBytes = Convert.FromBase64String(storedSalt);
+
+        Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(
+            enteredPassword, saltBytes, 10000);
+
         return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256)) == storedHash;
     }
 
@@ -58,8 +61,6 @@ public class LoginController : ControllerBase
     {
         using (IDbConnection db = new ConnectionClass().connection)
         {
-
-            // TODO: FIND USER IN DB 
             string query = $@"
                 SELECT
                     *
@@ -69,23 +70,17 @@ public class LoginController : ControllerBase
                     users.email = '{userLogin.email}'";
 
             User? currentUser = db.QuerySingle<User>(query, null);
-            // MOCK USER
-            // User? currentUser = UserConstants.users.FirstOrDefault(o =>
-            //     o?.email?.ToLower() == userLogin?.email?.ToLower()
-            //     && o?.user_pass == userLogin?.user_pass);
 
             if (currentUser is not null)
             {
                 //check password hashing
-                bool matched = VerifyPassword(userLogin.user_pass!, currentUser.user_pass!, currentUser.salt!);
+                bool matched = VerifyPassword(
+                    userLogin.user_pass!, currentUser.user_pass!, currentUser.salt!);
+
                 if (matched)
-                {
                     return currentUser;
-                }
                 else
-                {
                     return new Exception("Incorrect credentials");
-                }
             }
             else
                 return null;

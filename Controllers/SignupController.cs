@@ -105,9 +105,4 @@ public class SignupController : ControllerBase
 
         return new HashResult(hashed, salt);
     }
-
-    private static string UnhashPassword(string hashed_pass)
-    {
-        return "ksdfj";
-    }
 }
