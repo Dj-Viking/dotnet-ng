@@ -46,6 +46,7 @@ import { LoginComponent } from './views/login/login.component';
         JokeGetButtonComponent,
         JokeCategorySelectComponent,
         SignupComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
