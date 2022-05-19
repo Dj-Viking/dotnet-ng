@@ -13,15 +13,15 @@ public class UserConstants
         {
             username = "bobbyjoe",
             email = "bobbyjoe@mail.com",
-            password = "bobbyjoe",
-            role = "admin"
+            user_pass = "bobbyjoe",
+            user_role = "admin"
         },
         new User()
         {
             username = "billybob",
             email = "billybob@mail.com",
-            password = "billybob",
-            role = "user"
+            user_pass = "billybob",
+            user_role = "user"
         },
     };
 

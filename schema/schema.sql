@@ -10,3 +10,13 @@ CREATE TABLE todos (
   todo_text VARCHAR(255),
   reminder BIT
 );
+
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  user_pass VARCHAR(1024) NOT NULL,
+  salt VARCHAR(255) NOT NULL,
+  user_role VARCHAR(255) NULL,
+  token VARCHAR(1024) NULL
+);
