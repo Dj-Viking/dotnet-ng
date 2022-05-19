@@ -47,7 +47,7 @@ public class LoginController : ControllerBase
         return NotFound("user not found");
     }
 
-    public static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
+    private static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
     {
         byte[] saltBytes = Convert.FromBase64String(storedSalt);
 

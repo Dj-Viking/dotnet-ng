@@ -52,8 +52,6 @@ public class SignupController : ControllerBase
                 if (users.Count() == 0)
                 {
                     // hash the password
-                    // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
-                    // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
                     HashResult hashResult = HashPassword(userSignup.user_pass!);
 
                     //create the new user from class and insert into database
