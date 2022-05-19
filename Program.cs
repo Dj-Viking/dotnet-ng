@@ -7,6 +7,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// setup app
+
 builder.Services.AddHttpClient("chuck_norris", httpClient =>
 {
     httpClient.BaseAddress = new Uri("https://api.chucknorris.io");
@@ -48,6 +50,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddMvc();
 builder.Services.AddControllers();
 
+//build app
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,6 +71,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-
+// run app
 
 app.Run();

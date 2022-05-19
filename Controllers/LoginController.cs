@@ -110,7 +110,6 @@ public class LoginController : ControllerBase
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler()
-            .WriteToken(token);
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

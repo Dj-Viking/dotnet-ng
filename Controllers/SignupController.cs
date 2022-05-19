@@ -93,13 +93,16 @@ public class SignupController : ControllerBase
         // hash the password
         // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
         byte[] saltBytes = new byte[16];
+
         RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+
         provider.GetNonZeroBytes(saltBytes);
+
         string salt = Convert.ToBase64String(saltBytes);
 
-        Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(input_pass, saltBytes, 10000);
+        Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(
+            input_pass, saltBytes, 10000);
         string hashed = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
-
 
         return new HashResult(hashed, salt);
     }
