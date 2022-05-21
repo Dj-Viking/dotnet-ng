@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
+using System.Runtime;
 using Dapper;
 using dotnet_ng.Connection;
 using dotnet_ng;
@@ -73,7 +74,15 @@ public class SignupController : ControllerBase
                     Thread.Sleep(10);
                     int id = db.QuerySingle<int>(inserted, null);
 
-                    return Ok(new { status = 200, id = id });
+                    //generate new token to send back to client
+                    string token = GenerateToken(new User()
+                    {
+                        username = userSignup.username,
+                        email = userSignup.email,
+                        user_role = "user"
+                    });
+
+                    return Ok(new { status = 200, id = id, token = token });
                 }
                 else
                 {
@@ -94,9 +103,9 @@ public class SignupController : ControllerBase
         // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
         byte[] saltBytes = new byte[16];
 
-        RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+        //TODO: deprecate the RNG thing keeps throwing a warning
 
-        provider.GetNonZeroBytes(saltBytes);
+        byte[] randomSaltBytes = RandomizeSaltBytes(saltBytes);
 
         string salt = Convert.ToBase64String(saltBytes);
 
@@ -105,5 +114,43 @@ public class SignupController : ControllerBase
         string hashed = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
 
         return new HashResult(hashed, salt);
+    }
+
+    private static string GenerateToken(User user)
+    {
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes("Dhft0S5uphK3vmCJQrexSt1RsyjZBjXWRgJMFPU4"));
+
+        SigningCredentials credentials = new SigningCredentials(securityKey,
+            SecurityAlgorithms.HmacSha256);
+
+        Claim[] claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.username!),
+            new Claim(ClaimTypes.Email, user.email!),
+            new Claim(ClaimTypes.Role, user.user_role!),
+        };
+
+        JwtSecurityToken token = new JwtSecurityToken(
+            "https://localhost:44305/",
+            "https://localhost:44305/",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    //TODO: implement a random number generator to replace all zeros in the byte array with a random number with max size of a byte
+    public static byte[] RandomizeSaltBytes(byte[] saltBytes)
+    {
+        Random rnd = new Random();
+        for (int i = 0; i < saltBytes.Length; i++)
+        {
+            byte random_byte_num = Convert.ToByte(rnd.Next(1, 256));
+            //replace current 0 with random byte number
+            saltBytes[i] = random_byte_num;
+        }
+        return saltBytes;
     }
 }

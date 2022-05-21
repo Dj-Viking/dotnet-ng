@@ -57,3 +57,26 @@ export type IGetJokeByCategoryResponse = {
 } & {
     error: unknown;
 }
+
+export type ISignupResponse = {
+    status: number;
+    user: IUser;
+} & {
+    error: unknown;
+}
+
+export interface IUser {
+    username?: string;
+    user_role?: string;
+    email?: string;
+    token?: string;
+    todos?: Todo[];
+}
+
+export class UserClass implements IUser {
+    user_role?: string | undefined;
+    username?: string | undefined;
+    email?: string | undefined;
+    token?: string | undefined;
+    todos?: Todo[] | undefined;
+}
