@@ -104,13 +104,14 @@ public class SignupController : ControllerBase
         byte[] saltBytes = new byte[16];
 
         //TODO: deprecate the RNG thing keeps throwing a warning
-
-        byte[] randomSaltBytes = RandomizeSaltBytes(saltBytes);
+        // saltBytes and passed by reference here and is modified in place
+        RandomizeSaltBytes(saltBytes);
 
         string salt = Convert.ToBase64String(saltBytes);
 
         Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(
             input_pass, saltBytes, 10000);
+
         string hashed = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
 
         return new HashResult(hashed, salt);
@@ -142,7 +143,7 @@ public class SignupController : ControllerBase
     }
 
     //TODO: implement a random number generator to replace all zeros in the byte array with a random number with max size of a byte
-    public static byte[] RandomizeSaltBytes(byte[] saltBytes)
+    public static void RandomizeSaltBytes(byte[] saltBytes)
     {
         Random rnd = new Random();
         for (int i = 0; i < saltBytes.Length; i++)
@@ -151,6 +152,5 @@ public class SignupController : ControllerBase
             //replace current 0 with random byte number
             saltBytes[i] = random_byte_num;
         }
-        return saltBytes;
     }
 }
