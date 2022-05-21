@@ -141,7 +141,6 @@ public class SignupController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    //TODO: implement a random number generator to replace all zeros in the byte array with a random number with max size of a byte
     public static void RandomizeSaltBytes(byte[] saltBytes)
     {
         Random rnd = new Random();
