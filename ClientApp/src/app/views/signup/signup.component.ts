@@ -31,8 +31,8 @@ export class SignupComponent implements OnInit {
             .subscribe(
                 (success: ISignupResponse) => {
                     this._signupService.onSignupCompleteSetUser(success.user);
+                    // whoever is subscribed to the loggedIn observable well get the next value
                     this._uiService.onToggleIsLoggedIn(true);
-                    this._uiService.toggleIsLoggedIn();
                 },
                 (error: ISignupResponse) => {
                     this._uiService.onToggleIsLoggedIn(false);

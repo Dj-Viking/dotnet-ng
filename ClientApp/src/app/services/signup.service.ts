@@ -32,7 +32,7 @@ export class SignupService {
         this._userSubject.next(user);
     }
 
-    public loggedInUser(): Observable<UserClass> {
+    public getUser(): Observable<UserClass> {
         return this._userSubject.asObservable();
     }
 
