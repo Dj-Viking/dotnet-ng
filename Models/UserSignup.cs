@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnet_ng;
 
-public class UserLogin
+public class UserSignup
 {
     public string? username { get; set; }
     public string? user_pass { get; set; }
     public string? email { get; set; }
-
 }

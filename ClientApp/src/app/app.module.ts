@@ -22,6 +22,8 @@ import { JokesHeaderComponent } from './components/jokes-header/jokes-header.com
 import { JokeItemComponent } from './components/joke-item/joke-item.component';
 import { JokeGetButtonComponent } from './components/joke-get-button/joke-get-button.component';
 import { JokeCategorySelectComponent } from './components/joke-category-select/joke-category-select.component';
+import { SignupComponent } from './views/signup/signup.component';
+import { LoginComponent } from './views/login/login.component';
 
 
 @NgModule({
@@ -43,6 +45,8 @@ import { JokeCategorySelectComponent } from './components/joke-category-select/j
         JokeItemComponent,
         JokeGetButtonComponent,
         JokeCategorySelectComponent,
+        SignupComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -54,6 +58,8 @@ import { JokeCategorySelectComponent } from './components/joke-category-select/j
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'todo-list', component: TodosComponent },
             { path: 'jokes-list', component: JokesComponent },
+            { path: 'signup-page', component: SignupComponent },
+            { path: 'login-page', component: LoginComponent },
         ]),
         FontAwesomeModule
     ],

@@ -7,7 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
 using System.Text;
+using Dapper;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using dotnet_ng.Connection;
@@ -29,30 +31,61 @@ public class LoginController : ControllerBase
     [HttpPost]
     public IActionResult Login([FromBody] UserLogin userLogin)
     {
-        // TODO: query a previously inserted 
-        // user from database instead of hard coded mock user
 
-        User? user = Authenticate(userLogin);
-
-        if (user is not null)
+        var authResult = Authenticate(userLogin);
+        if (authResult is Exception)
         {
-            string token = Generate(user);
+            return BadRequest(new { error = authResult });
+        }
+
+        if (authResult is not null)
+        {
+            string token = Generate(authResult);
             return Ok(new { token = token });
         }
 
         return NotFound("user not found");
     }
 
-    private static User? Authenticate(UserLogin userLogin)
+    private static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
     {
-        User? currentUser = UserConstants.users.FirstOrDefault(o =>
-            o?.username?.ToLower() == userLogin?.username?.ToLower()
-            && o?.password == userLogin?.password);
+        byte[] saltBytes = Convert.FromBase64String(storedSalt);
 
-        if (currentUser is not null)
-            return currentUser;
-        else
-            return null;
+        Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(
+            enteredPassword, saltBytes, 10000);
+
+        return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256)) == storedHash;
+    }
+
+    private static dynamic? Authenticate(UserLogin userLogin)
+    {
+        using (IDbConnection db = new ConnectionClass().connection)
+        {
+            string query = $@"
+                SELECT
+                    *
+                FROM
+                    users
+                WHERE
+                    users.email = '{userLogin.email}'";
+
+            User? currentUser = db.QuerySingle<User>(query, null);
+
+            if (currentUser is not null)
+            {
+                //check password hashing
+                bool matched = VerifyPassword(
+                    userLogin.user_pass!, currentUser.user_pass!, currentUser.salt!);
+
+                if (matched)
+                    return currentUser;
+                else
+                    return new Exception("Incorrect credentials");
+            }
+            else
+                return null;
+        }
+
     }
 
     private static string Generate(User user)
@@ -67,7 +100,7 @@ public class LoginController : ControllerBase
         {
             new Claim(ClaimTypes.NameIdentifier, user.username!),
             new Claim(ClaimTypes.Email, user.email!),
-            new Claim(ClaimTypes.Role, user.role!),
+            new Claim(ClaimTypes.Role, user.user_role!),
         };
 
         JwtSecurityToken token = new JwtSecurityToken(
@@ -77,7 +110,6 @@ public class LoginController : ControllerBase
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler()
-            .WriteToken(token);
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

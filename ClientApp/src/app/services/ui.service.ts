@@ -12,7 +12,9 @@ export class UiService {
     private _showEditError: boolean = false;
     private _isLoading: boolean = false;
     private _showAddError: boolean = false;
+    private _isLoggedIn: boolean = false;
 
+    private _isLoggedInSubject = new Subject<boolean>();
     private _showEditErrorSubject = new Subject<boolean>();
     private _showAddErrorSubject = new Subject<boolean>();
     private _addTodoSubject = new Subject<boolean>();
@@ -22,8 +24,17 @@ export class UiService {
 
     constructor() { }
 
-    public onToggleIsLoading(): void {
-        this._isLoading = !this._isLoading;
+    public onToggleIsLoggedIn(state: boolean): void {
+        this._isLoggedIn = state;
+        this._isLoggedInSubject.next(this._isLoggedIn);
+    }
+
+    public toggleIsLoggedIn(): Observable<boolean> {
+        return this._isLoggedInSubject.asObservable();
+    }
+
+    public onToggleIsLoading(state: boolean): void {
+        this._isLoading = state;
         this._isLoadingSubject.next(this._isLoading);
     }
 
