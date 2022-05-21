@@ -103,7 +103,6 @@ public class SignupController : ControllerBase
         // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
         byte[] saltBytes = new byte[16];
 
-        //TODO: deprecate the RNG thing keeps throwing a warning
         // saltBytes and passed by reference here and is modified in place
         RandomizeSaltBytes(saltBytes);
 
