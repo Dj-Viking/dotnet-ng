@@ -33,8 +33,8 @@ export class UiService {
         return this._isLoggedInSubject.asObservable();
     }
 
-    public onToggleIsLoading(): void {
-        this._isLoading = !this._isLoading;
+    public onToggleIsLoading(state: boolean): void {
+        this._isLoading = state;
         this._isLoadingSubject.next(this._isLoading);
     }
 

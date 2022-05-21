@@ -65,8 +65,16 @@
         [ngStyle]="{'display': 'flex', 'justify-content': 'center'}"
     >
         <button
+            *ngIf="!isLoading"
             type="submit"
             class="btn btn-primary"
         >Submit</button>
+        <div
+            *ngIf="isLoading"
+            class="spinner-border text-dark"
+            role="status"
+        >
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
 </form>
