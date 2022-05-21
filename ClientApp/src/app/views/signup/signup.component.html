@@ -74,7 +74,10 @@
             class="spinner-border text-dark"
             role="status"
         >
-            <span class="sr-only">Loading...</span>
+            <span
+                [ngStyle]="{'visibility': 'hidden'}"
+                class="sr-only"
+            >Loading...</span>
         </div>
     </div>
 </form>
