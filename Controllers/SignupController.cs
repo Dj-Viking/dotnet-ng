@@ -82,6 +82,14 @@ public class SignupController : ControllerBase
                         user_role = "user"
                     });
 
+                    //add token to user db..
+                    string updateUserToken = $@"
+                        UPDATE users
+                        SET token = '{token}'
+                        WHERE id = {id};";
+
+                    db.Execute(updateUserToken, null);
+
                     return Ok(new { status = 200, id = id, token = token });
                 }
                 else
@@ -103,7 +111,8 @@ public class SignupController : ControllerBase
         // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
         byte[] saltBytes = new byte[16];
 
-        // saltBytes and passed by reference here and is modified in place
+        // saltBytes and passed by reference here and is modified in place and can be returned from static method but the return type of the static method is void since the arr is modded in place
+
         RandomizeSaltBytes(saltBytes);
 
         string salt = Convert.ToBase64String(saltBytes);
@@ -147,7 +156,7 @@ public class SignupController : ControllerBase
         for (int i = 0; i < saltBytes.Length; i++)
         {
             byte random_byte_num = Convert.ToByte(rnd.Next(1, 256));
-            //replace current 0 with random byte number
+            //replace current item with random byte number
             saltBytes[i] = random_byte_num;
         }
     }
