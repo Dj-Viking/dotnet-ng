@@ -2,8 +2,17 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration.Json;
 using System.Text;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Host.ConfigureAppConfiguration((hosting_context, config) =>
+{ //TODO: inject the environment here somehow to the json file name
+    config.AddJsonFile("appsettings.json",
+                        optional: true,
+                        reloadOnChange: true);
+});
 
 // Add services to the container.
 
@@ -24,7 +33,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("https://localhost:44456")
+                          policy.WithOrigins(builder.Configuration["dev_cors:url"])
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                       });
@@ -38,12 +47,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:44305/",
-            ValidAudience = "https://localhost:44305/",
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey =
                 new SymmetricSecurityKey(
                     Encoding.UTF8
-                        .GetBytes("Dhft0S5uphK3vmCJQrexSt1RsyjZBjXWRgJMFPU4"))
+                        .GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 

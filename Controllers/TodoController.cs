@@ -12,10 +12,15 @@ public class TodoController : ControllerBase
 {
 
     private readonly ILogger<TodoController> _logger;
+    private readonly IConfiguration _config;
 
-    public TodoController(ILogger<TodoController> logger)
+    public TodoController(
+        ILogger<TodoController> logger,
+        IConfiguration config
+    )
     {
-        _logger = logger;
+        this._config = config;
+        this._logger = logger;
     }
 
     // todos
@@ -24,7 +29,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new ConnectionClass().connection)
+            using (IDbConnection db = new ConnectionClass(this._config).connection)
             {
                 Todo newTodo = new Todo()
                 {
@@ -64,7 +69,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new ConnectionClass().connection)
+            using (IDbConnection db = new ConnectionClass(this._config).connection)
             {
                 string query = "SELECT * FROM todos";
 
@@ -88,7 +93,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new ConnectionClass().connection)
+            using (IDbConnection db = new ConnectionClass(this._config).connection)
             {
                 string query = $@"
                     DELETE FROM 
@@ -110,9 +115,9 @@ public class TodoController : ControllerBase
         }
     }
 
-    private static void DeleteItem(int id, string tableName)
+    private void DeleteItem(int id, string tableName)
     {
-        using (IDbConnection db = new ConnectionClass().connection)
+        using (IDbConnection db = new ConnectionClass(this._config).connection)
         {
             string query = $@"
                 DELETE FROM
@@ -124,7 +129,7 @@ public class TodoController : ControllerBase
         }
     }
 
-    private static dynamic ConcurrentDelete(List<int> ids)
+    private dynamic ConcurrentDelete(List<int> ids)
     {
         try
         {
@@ -157,7 +162,7 @@ public class TodoController : ControllerBase
                 {
                     for (int i = 0; i < list1.Count; i++)
                     {
-                        DeleteItem(list1[i], "todos");
+                        this.DeleteItem(list1[i], "todos");
                     }
                 });
 
@@ -165,7 +170,7 @@ public class TodoController : ControllerBase
                 {
                     for (int i = 0; i < list2.Count; i++)
                     {
-                        DeleteItem(list2[i], "todos");
+                        this.DeleteItem(list2[i], "todos");
                     }
                 });
 
@@ -209,7 +214,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new ConnectionClass().connection)
+            using (IDbConnection db = new ConnectionClass(this._config).connection)
             {
                 string reminderUpdate = $@"
                     UPDATE
@@ -238,7 +243,7 @@ public class TodoController : ControllerBase
     {
         try
         {
-            using (IDbConnection db = new ConnectionClass().connection)
+            using (IDbConnection db = new ConnectionClass(this._config).connection)
             {
 
                 string update = $@"
