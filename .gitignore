@@ -3,6 +3,8 @@
 obj/
 bin/
 appsettings.json
+appsettings.*.json
+app.json
 
 # User-specific files
 *.suo
