@@ -20,11 +20,11 @@ namespace dotnet_ng.Controllers;
 [Route("/api/login")]
 public class LoginController : ControllerBase
 {
-    private IConfiguration _config;
+    private readonly IConfiguration _config;
 
     public LoginController(IConfiguration config)
     {
-        _config = config;
+        this._config = config;
     }
 
     [AllowAnonymous]
@@ -40,7 +40,7 @@ public class LoginController : ControllerBase
 
         if (authResult is not null)
         {
-            string token = Generate(authResult);
+            string token = this.Generate(authResult);
             return Ok(new { token = token });
         }
 
@@ -57,9 +57,9 @@ public class LoginController : ControllerBase
         return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256)) == storedHash;
     }
 
-    private static dynamic? Authenticate(UserLogin userLogin)
+    private dynamic? Authenticate(UserLogin userLogin)
     {
-        using (IDbConnection db = new ConnectionClass().connection)
+        using (IDbConnection db = new ConnectionClass(this._config).connection)
         {
             string query = $@"
                 SELECT
@@ -88,10 +88,10 @@ public class LoginController : ControllerBase
 
     }
 
-    private static string Generate(User user)
+    private string Generate(User user)
     {
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes("Dhft0S5uphK3vmCJQrexSt1RsyjZBjXWRgJMFPU4"));
+            Encoding.UTF8.GetBytes(this._config["Jwt:Key"]));
 
         SigningCredentials credentials = new SigningCredentials(securityKey,
             SecurityAlgorithms.HmacSha256);
@@ -104,8 +104,8 @@ public class LoginController : ControllerBase
         };
 
         JwtSecurityToken token = new JwtSecurityToken(
-            "https://localhost:44305/",
-            "https://localhost:44305/",
+            this._config["Jwt:Issuer"],
+            this._config["Jwt:Audience"],
             claims: claims,
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);

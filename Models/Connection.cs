@@ -8,22 +8,15 @@ namespace dotnet_ng.Connection;
 
 public class ConnectionClass
 {
-    private string host;
-    private string database;
-    private string username;
-    private string password;
+    private readonly IConfiguration config;
     public MySqlConnection connection;
     public string connection_string;
-
-    public ConnectionClass()
+    public ConnectionClass(IConfiguration config)
     {
-        host = "localhost";
-        database = "test_cs";
-        username = "root";
-        password = "root123@";
-        connection_string = $"Server={host};Database={database};User={username};Password={password};";
+        this.config = config;
+        this.connection_string = this.config["ConnectionStrings:dev"];
 
-        connection = new MySqlConnection(connection_string);
+        this.connection = new MySqlConnection(this.connection_string);
     }
 
 

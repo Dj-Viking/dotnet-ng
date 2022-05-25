@@ -23,11 +23,10 @@ namespace dotnet_ng.Controllers;
 [Route("/api/signup")]
 public class SignupController : ControllerBase
 {
-    private IConfiguration _config;
-
+    private readonly IConfiguration _config;
     public SignupController(IConfiguration config)
     {
-        _config = config;
+        this._config = config;
     }
 
     [AllowAnonymous]
@@ -37,7 +36,7 @@ public class SignupController : ControllerBase
         try
         {
             // get user from db if exists...prevent another sign up of same person
-            using (IDbConnection db = new ConnectionClass().connection)
+            using (IDbConnection db = new ConnectionClass(this._config).connection)
             {
 
                 string query = $@"
@@ -75,7 +74,7 @@ public class SignupController : ControllerBase
                     int id = db.QuerySingle<int>(inserted, null);
 
                     //generate new token to send back to client
-                    string token = GenerateToken(new User()
+                    string token = this.GenerateToken(new User()
                     {
                         username = userSignup.username,
                         email = userSignup.email,
@@ -125,10 +124,10 @@ public class SignupController : ControllerBase
         return new HashResult(hashed, salt);
     }
 
-    private static string GenerateToken(User user)
+    private string GenerateToken(User user)
     {
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes("Dhft0S5uphK3vmCJQrexSt1RsyjZBjXWRgJMFPU4"));
+            Encoding.UTF8.GetBytes(this._config["Jwt:Key"]));
 
         SigningCredentials credentials = new SigningCredentials(securityKey,
             SecurityAlgorithms.HmacSha256);
@@ -141,8 +140,8 @@ public class SignupController : ControllerBase
         };
 
         JwtSecurityToken token = new JwtSecurityToken(
-            "https://localhost:44305/",
-            "https://localhost:44305/",
+            this._config["Jwt:Issuer"],
+            this._config["Jwt:Audience"],
             claims: claims,
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);

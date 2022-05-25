@@ -2,6 +2,7 @@
 
 namespace dotnet_ng.Controllers;
 using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Configuration;
 using dotnet_ng.Connection;
 
 [ApiController]
@@ -14,10 +15,15 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly IConfiguration _config;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(
+        ILogger<WeatherForecastController> logger,
+        IConfiguration config
+    )
     {
-        _logger = logger;
+        this._logger = logger;
+        this._config = config;
     }
 
     [HttpGet]
