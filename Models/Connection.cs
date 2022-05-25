@@ -16,7 +16,7 @@ public class ConnectionClass
         this.config = config;
         this.connection_string = this.config["ConnectionStrings:dev"];
 
-        this.connection = new MySqlConnection(connection_string);
+        this.connection = new MySqlConnection(this.connection_string);
     }
 
 
