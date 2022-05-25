@@ -100,7 +100,8 @@ public class SignupController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(new { error = e });
+            Console.WriteLine("error during signup {0}", e);
+            return BadRequest(new { error = "error during signup" });
         }
     }
 
